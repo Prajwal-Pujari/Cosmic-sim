@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌌 Cosmic-Sim: An Interactive Universe Simulation
 
-## Getting Started
+A cinematic, interactive 3D simulation of the universe's origins, from the Planck Epoch to the first stars. This project is built with Next.js, React Three Fiber, and GSAP to create a beautiful and educational experience.
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🚀 Current Status
 
-## Learn More
+This project is in active development. The simulation currently includes:
+* **The Planck Epoch:** A representation of the initial singularity and the chaotic "quantum foam."
+* **Cosmic Inflation:** A violent, cinematic expansion event with post-processing "shockwave" effects.
+* **Interactive Info Panels:** Clickable 3D objects that fetch data from a local JSON "API" and the live NASA Image API.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🛠️ Tech Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project uses a modern, high-performance web stack:
+* **Framework:** [Next.js](https://nextjs.org/) (React)
+* **3D Graphics:** [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction) (R3F)
+* **3D Helpers:** [React Three Drei](https://github.com/pmndrs/drei)
+* **Animation:** [GSAP](https://gsap.com/) (for "cinematic" timeline control)
+* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
+* **Effects:** [React Postprocessing](https://github.com/pmndrs/react-postprocessing) (for Bloom, Chromatic Aberration, etc.)
+* **Language:** TypeScript
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🏁 Getting Started
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To run this project on your local machine:
+
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/Prajwal-Pujari/Cosmic-sim.git](https://github.com/Prajwal-Pujari/Cosmic-sim.git)
+    ```
+
+2.  **Navigate into the directory:**
+    ```bash
+    cd cosmic-sim
+    ```
+
+3.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+4.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser to see the simulation.
+
+---
+
+## 🗺️ Project Roadmap
+
+The goal is to simulate all seven major events in the universe's timeline:
+
+1.  [x] **Planck Epoch** (The vibrating point)
+2.  [x] **Cosmic Inflation** (The violent expansion)
+3.  [ ] **Quark-Gluon Plasma** (The "particle soup")
+4.  [ ] **Nucleosynthesis** (Protons and neutrons form)
+5.  [ ] **Recombination** (The "First Light")
+6.  [ ] **The Dark Ages** (A vast, dark void)
+7.  [ ] **First Stars Ignite** (The darkness ends)
