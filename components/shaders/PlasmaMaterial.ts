@@ -1,5 +1,3 @@
-// In: components/shaders/PlasmaMaterial.ts
-
 import { shaderMaterial } from '@react-three/drei'
 import { extend } from '@react-three/fiber'
 import { Color } from 'three'
@@ -12,12 +10,14 @@ export const PlasmaMaterial = shaderMaterial(
     uScale: 0.1, // Start small for fade-in
     uColor1: new Color('#ff8000'), // Orange
     uColor2: new Color('#ff0000'), // Red
+    uColor3: new Color('#ffff00'), // Yellow for more variation
   },
   // Vertex Shader (Includes Perlin noise function)
   `
     uniform float uTime;
     uniform float uScale;
     varying float vNoise;
+    varying vec3 vPosition;
 
     // Perlin noise function
     vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -58,17 +58,29 @@ export const PlasmaMaterial = shaderMaterial(
     }
 
     void main() {
-      float noiseFreq = 0.5;
-      float noiseAmp = 0.5 * uScale;
-      vec3 noisePos = vec3(position.x * noiseFreq + uTime * 0.1, position.y * noiseFreq + uTime * 0.1, position.z * noiseFreq);
-      vNoise = snoise(noisePos);
-      vec3 displacement = vec3(vNoise, vNoise, vNoise) * noiseAmp;
+      vPosition = position;
+      float noiseFreq = 0.8;
+      float noiseAmp = 0.8 * uScale;
+      
+      // Multi-layered noise for more chaotic movement
+      vec3 noisePos1 = vec3(position.x * noiseFreq + uTime * 0.3, position.y * noiseFreq + uTime * 0.2, position.z * noiseFreq);
+      vec3 noisePos2 = vec3(position.x * noiseFreq * 2.0 - uTime * 0.15, position.y * noiseFreq * 2.0, position.z * noiseFreq * 2.0 + uTime * 0.1);
+      
+      float noise1 = snoise(noisePos1);
+      float noise2 = snoise(noisePos2) * 0.5;
+      vNoise = noise1 + noise2;
+      
+      vec3 displacement = vec3(vNoise, vNoise * 0.8, vNoise * 1.2) * noiseAmp;
       vec3 newPosition = position + displacement;
+      
       vec4 modelPosition = modelMatrix * vec4(newPosition, 1.0);
       vec4 viewPosition = viewMatrix * modelPosition;
       vec4 projectionPosition = projectionMatrix * viewPosition;
       gl_Position = projectionPosition;
-      gl_PointSize = (1.0 * uScale) * (150.0 / -viewPosition.z);
+      
+      // Dynamic point size based on noise
+      float sizeVariation = 0.5 + abs(vNoise) * 0.5;
+      gl_PointSize = (1.5 * uScale * sizeVariation) * (150.0 / -viewPosition.z);
     }
   `,
   // Fragment Shader
@@ -76,12 +88,30 @@ export const PlasmaMaterial = shaderMaterial(
     uniform float uScale;
     uniform vec3 uColor1;
     uniform vec3 uColor2;
+    uniform vec3 uColor3;
     varying float vNoise;
+    varying vec3 vPosition;
 
     void main() {
-      vec3 finalColor = mix(uColor1, uColor2, smoothstep(0.0, 1.0, vNoise * 0.5 + 0.5));
-      float strength = 1.0 - (length(gl_PointCoord - vec2(0.5)) * 2.0);
-      gl_FragColor = vec4(finalColor, strength * uScale);
+      // Create more dynamic color mixing
+      float mixFactor = smoothstep(-0.5, 0.5, vNoise);
+      vec3 color1 = mix(uColor1, uColor2, mixFactor);
+      vec3 finalColor = mix(color1, uColor3, abs(sin(vNoise * 3.14159)));
+      
+      // Add hot spots based on position
+      float hotSpot = smoothstep(0.3, 0.0, length(vPosition) / 5.0);
+      finalColor = mix(finalColor, uColor3, hotSpot * 0.5);
+      
+      // Circular point with soft edge
+      float dist = length(gl_PointCoord - vec2(0.5));
+      float strength = 1.0 - smoothstep(0.3, 0.5, dist);
+      
+      // Add glow effect
+      float glow = exp(-dist * 4.0) * 0.5;
+      strength = max(strength, glow);
+      
+      float alpha = strength * uScale * (0.6 + abs(vNoise) * 0.4);
+      gl_FragColor = vec4(finalColor, alpha);
     }
   `
 );
@@ -92,6 +122,6 @@ extend({ PlasmaMaterial });
 // TypeScript declaration for JSX
 declare module '@react-three/fiber' {
   interface ThreeElements {
-    plasmaMaterial: any; // Using 'any' as the escape hatch
+    plasmaMaterial: any;
   }
 }

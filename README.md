@@ -63,7 +63,7 @@ The goal is to simulate all seven major events in the universe's timeline:
 
 1.  [x] **Planck Epoch** (The vibrating point)
 2.  [x] **Cosmic Inflation** (The violent expansion)
-3.  [ ] **Quark-Gluon Plasma** (The "particle soup")
+3.  [x] **Quark-Gluon Plasma** (The "particle soup")
 4.  [ ] **Nucleosynthesis** (Protons and neutrons form)
 5.  [ ] **Recombination** (The "First Light")
 6.  [ ] **The Dark Ages** (A vast, dark void)
