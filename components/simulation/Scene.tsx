@@ -6,6 +6,7 @@ import { gsap } from 'gsap'
 import PlanckPoint from './PlanckPoint'
 import QuantumFoam from './QuantumFoam'
 import QuarkGluonPlasma from './QuarkGluonPlasma'
+import Nucleosynthesis from './Nucleosynthesis';
 
 const Scene = forwardRef(({ 
   setEpoch,
@@ -34,7 +35,6 @@ const Scene = forwardRef(({
       setEpoch('inflation')
       controlsRef.current.enabled = false
       
-      // Save current camera position for dramatic effect
       const startPos = { ...camera.position }
       
       const tl = gsap.timeline({
@@ -43,21 +43,21 @@ const Scene = forwardRef(({
         }
       })
       
-      // 0. Pre-explosion tension - zoom in slowly
+      // Pre-explosion tension
       tl.to(camera.position, { 
         z: startPos.z - 1, 
         duration: 0.8, 
         ease: 'power1.in' 
       }, 0)
       
-      // 1. EXPLOSION - Camera rushes forward into the singularity
+      // EXPLOSION
       tl.to(camera.position, { 
         z: 0.5, 
         duration: 0.4, 
         ease: 'power4.in' 
       }, 0.8)
       
-      // 2. Massive FOV expansion (tunnel vision effect)
+      // FOV expansion
       tl.to(camera, { 
         fov: 140, 
         duration: 0.6, 
@@ -65,21 +65,21 @@ const Scene = forwardRef(({
         onUpdate: () => camera.updateProjectionMatrix() 
       }, 0.8)
       
-      // 3. Camera gets BLASTED backwards by the expansion
+      // Camera blast backwards
       tl.to(camera.position, { 
         z: 15, 
         duration: 1.2, 
         ease: 'power3.out' 
       }, 1.2)
       
-      // 4. Settle camera position
+      // Settle camera
       tl.to(camera.position, { 
         z: 8, 
         duration: 1.0, 
         ease: 'power2.inOut' 
       }, 2.4)
       
-      // 5. Camera rotation for dynamic feel
+      // Camera rotation
       tl.to(camera.rotation, {
         z: 0.1,
         duration: 1.0,
@@ -91,7 +91,7 @@ const Scene = forwardRef(({
         ease: 'power2.out'
       }, 2.2)
 
-      // 6. Universe Scale explosion
+      // Universe Scale explosion
       tl.to(universeRef.current.scale, { 
         x: 150, 
         y: 150, 
@@ -100,7 +100,7 @@ const Scene = forwardRef(({
         ease: 'expo.out' 
       }, 1.2)
 
-      // 7. Planck Point - flash bright then fade
+      // Planck Point flash
       tl.to(pointMaterialRef.current, { 
         opacity: 2.0, 
         duration: 0.3, 
@@ -112,7 +112,7 @@ const Scene = forwardRef(({
         ease: 'power2.out' 
       }, 1.1)
       
-      // 8. MASSIVE Chromatic Aberration shockwave
+      // Chromatic aberration shockwave
       tl.to(chromaticRef.current.offset, {
         x: 0.05,
         y: 0.05,
@@ -126,11 +126,11 @@ const Scene = forwardRef(({
         ease: 'power2.out',
       }, 1.2)
       
-      // 9. Bloom intensity spike using callback
+      // Bloom intensity spike
       tl.call(() => setBloomIntensity(3.0), [], 0.8)
       tl.call(() => setBloomIntensity(1.0), [], 2.6)
 
-      // 10. Animate BOTH particle shaders with stagger
+      // Particle shader animation
       tl.to(foamMaterialRef.current.uniforms.uInflation, {
         value: 1.0,
         duration: 1.8,
@@ -154,138 +154,217 @@ const Scene = forwardRef(({
         
         const tl = gsap.timeline()
 
-        // 1. Camera swoops around dramatically
+        // PHASE 1: DIRECTED CUT - Sharp camera snap to new angle (like a film cut)
         tl.to(camera.position, { 
-          x: -5, 
-          y: 3,
-          z: 12, 
-          duration: 2.5, 
-          ease: 'power2.inOut' 
+          x: -8, 
+          y: 5,
+          z: 16,
+          duration: 0.4,
+          ease: 'power4.out'
         }, 0)
         
-        // 2. Camera looks at center while moving
+        tl.to(camera.rotation, {
+          x: -0.25,
+          y: -0.4,
+          duration: 0.4,
+          ease: 'power4.out'
+        }, 0)
+
+        // Quick FOV snap for dramatic effect
+        tl.to(camera, { 
+          fov: 45,
+          duration: 0.4,
+          ease: 'power4.out', 
+          onUpdate: () => camera.updateProjectionMatrix() 
+        }, 0)
+
+        // PHASE 2: CINEMATIC ZOOM IN - Moving closer to the plasma
+        tl.to(camera.position, { 
+          x: -4, 
+          y: 2,
+          z: 8,
+          duration: 2.0, 
+          ease: 'power1.inOut' 
+        }, 0.6)
+        
+        tl.to(camera.rotation, {
+          x: -0.15,
+          y: -0.2,
+          duration: 2.0,
+          ease: 'power1.inOut'
+        }, 0.6)
+
+        // Dramatic FOV tighten (zoom in feel)
+        tl.to(camera, { 
+          fov: 40,
+          duration: 2.0, 
+          ease: 'power2.in', 
+          onUpdate: () => camera.updateProjectionMatrix() 
+        }, 0.6)
+
+        // PHASE 3: ORBITAL CAMERA MOVEMENT - Circling the plasma
+        tl.to(camera.position, { 
+          x: 0, 
+          y: 3,
+          z: 11,
+          duration: 2.5, 
+          ease: 'power1.inOut' 
+        }, 2.6)
+        
         tl.to(camera.rotation, {
           x: -0.2,
-          y: -0.3,
+          y: 0,
           duration: 2.5,
-          ease: 'power2.inOut'
-        }, 0)
+          ease: 'power1.inOut'
+        }, 2.6)
+
+        // Continue orbit to the right side
+        tl.to(camera.position, { 
+          x: 6, 
+          y: 2,
+          z: 10,
+          duration: 2.5, 
+          ease: 'power1.inOut' 
+        }, 5.1)
         
-        // 3. Then settle into final position
+        tl.to(camera.rotation, {
+          x: -0.12,
+          y: 0.35,
+          duration: 2.5,
+          ease: 'power1.inOut'
+        }, 5.1)
+
+        // PHASE 4: ZOOM OUT TO FINAL POSITION - Revealing the full plasma
         tl.to(camera.position, { 
           x: 0, 
           y: 0, 
-          z: 7, 
-          duration: 2.0, 
+          z: 12,
+          duration: 2.5, 
           ease: 'power2.inOut' 
-        }, 2.5)
+        }, 7.6)
         
         tl.to(camera.rotation, {
           x: 0,
           y: 0,
-          duration: 2.0,
+          duration: 2.5,
           ease: 'power2.inOut'
-        }, 2.5)
+        }, 7.6)
 
-        // 4. FOV transitions smoothly
+        // Final FOV - wide and comfortable
         tl.to(camera, { 
-          fov: 50, 
-          duration: 3.0, 
-          ease: 'power2.inOut', 
+          fov: 65,
+          duration: 2.5, 
+          ease: 'power2.out', 
           onUpdate: () => camera.updateProjectionMatrix() 
-        }, 0)
-        
-        tl.to(camera, { 
-          fov: 60, 
-          duration: 1.5, 
-          ease: 'power1.out', 
-          onUpdate: () => camera.updateProjectionMatrix() 
-        }, 3.0)
+        }, 7.6)
 
-        // 5. Universe scale with rotation
+        // Universe scale transformations
         tl.to(universeRef.current.scale, { 
-          x: 0.3, 
-          y: 0.3, 
-          z: 0.3, 
-          duration: 2.0, 
+          x: 0.4,
+          y: 0.4, 
+          z: 0.4, 
+          duration: 1.5, 
           ease: 'power2.in' 
         }, 0)
         
         tl.to(universeRef.current.rotation, {
-          y: Math.PI * 0.5,
+          y: Math.PI * 0.3,
+          duration: 2.0,
+          ease: 'power1.inOut'
+        }, 0.6)
+        
+        tl.to(universeRef.current.scale, { 
+          x: 0.8, 
+          y: 0.8, 
+          z: 0.8, 
+          duration: 2.0, 
+          ease: 'power2.out' 
+        }, 2.6)
+
+        tl.to(universeRef.current.rotation, {
+          y: -Math.PI * 0.2,
           duration: 3.0,
           ease: 'power1.inOut'
-        }, 0)
+        }, 4.6)
         
         tl.to(universeRef.current.scale, { 
           x: 1, 
           y: 1, 
           z: 1, 
           duration: 2.0, 
-          ease: 'power2.out' 
-        }, 2.0)
+          ease: 'power1.out' 
+        }, 7.6)
         
         tl.to(universeRef.current.rotation, {
           y: 0,
-          duration: 2.0,
+          duration: 2.5,
           ease: 'power2.out'
-        }, 2.5)
+        }, 7.6)
 
-        // 6. Fade out foam with acceleration
+        // Fade out foam with stagger
         tl.to(foamMaterialRef.current.uniforms.uInflation, { 
           value: 3.0, 
-          duration: 2.0, 
+          duration: 1.8, 
           ease: 'power3.in' 
         }, 0)
         tl.to(distantFoamMaterialRef.current.uniforms.uInflation, { 
           value: 3.0, 
           duration: 2.0, 
           ease: 'power3.in' 
-        }, 0)
+        }, 0.2)
 
-        // 7. Chromatic aberration pulse for phase change
+        // Chromatic aberration for phase transition
         tl.to(chromaticRef.current.offset, {
-          x: 0.025,
-          y: 0.025,
-          duration: 0.6,
-          ease: 'power3.in',
-        }, 1.0)
+          x: 0.03,
+          y: 0.03,
+          duration: 0.4,
+          ease: 'power4.in',
+        }, 0)
         tl.to(chromaticRef.current.offset, {
-          x: 0.004,
-          y: 0.004,
+          x: 0.005,
+          y: 0.005,
           duration: 1.5,
           ease: 'power2.out',
-        }, 1.6)
+        }, 0.4)
         tl.to(chromaticRef.current.offset, {
           x: 0,
           y: 0,
-          duration: 2.0,
+          duration: 3.0,
           ease: 'power1.out',
-        }, 3.1)
+        }, 6.0)
         
-        // 8. Bloom surge for plasma heat using callbacks
-        tl.call(() => setBloomIntensity(2.5), [], 1.0)
-        tl.call(() => setBloomIntensity(1.8), [], 3.8)
+        // Bloom intensity waves
+        tl.call(() => setBloomIntensity(2.5), [], 0)
+        tl.call(() => setBloomIntensity(1.8), [], 2.6)
+        tl.call(() => setBloomIntensity(2.0), [], 5.1)
+        tl.call(() => setBloomIntensity(1.5), [], 9.0)
 
-        // 9. Plasma fade in with pulse
+        // Plasma materialization sequence
         tl.fromTo(plasmaMaterialRef.current.uniforms.uScale, 
           { value: 0 },
-          { value: 0.5, duration: 0.8, ease: 'power2.out' },
-          1.5
+          { value: 0.3, duration: 0.6, ease: 'power2.out' },
+          0.8
         )
         tl.to(plasmaMaterialRef.current.uniforms.uScale, 
-          { value: 2.0, duration: 2.5, ease: 'elastic.out(1, 0.5)' },
-          2.3
+          { value: 1.5, duration: 2.0, ease: 'back.out(1.2)' },
+          1.4
+        )
+        tl.to(plasmaMaterialRef.current.uniforms.uScale, 
+          { value: 2.0, duration: 2.5, ease: 'elastic.out(1, 0.4)' },
+          3.4
         )
 
-        // 10. Enable controls after the show
+        // Enable controls at the end with safe limits
         tl.call(() => {
           if (controlsRef.current) {
             controlsRef.current.enabled = true
             controlsRef.current.enableDamping = true
             controlsRef.current.dampingFactor = 0.05
+            controlsRef.current.minDistance = 8
+            controlsRef.current.maxDistance = 30
+            controlsRef.current.enablePan = false
           }
-        }, [], 4.5)
+        }, [], 10.1)
       }, 50)
     }
   }))
