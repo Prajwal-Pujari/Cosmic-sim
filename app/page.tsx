@@ -41,8 +41,19 @@ export default function Home() {
     
     setTimeout(() => {
       setIsTransitioning(false)
-    }, 13000)
+    }, 25000)
   }
+
+ const handleTransitionToDarkAges = () => {
+  setIsTransitioning(true)
+  sceneRef.current?.transitionToDarkAges()
+  
+  // Update timeout from 43000 to 46000 (45 seconds animation + 1 second buffer)
+  setTimeout(() => {
+    setIsTransitioning(false)
+  }, 46000)
+}
+  
 
   return (
     <div className="relative w-screen h-screen bg-black overflow-hidden">
@@ -87,29 +98,47 @@ export default function Home() {
             </h2>
             <p className="text-yellow-300">Time: t = 3-20 minutes</p>
             <p className="text-orange-400 font-semibold">Temp: ~1 billion K</p>
-            <p className="mt-2 text-sm text-yellow-200">Protons and neutrons fuse to form the first atomic nuclei.</p>
-            <div className="mt-3 space-y-1 text-xs">
+            <p className="mt-2 text-sm text-yellow-200">Nuclear fusion creates the first light elements.</p>
+            
+            <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
               <div className="flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-red-400 animate-pulse"></span>
-                <span className="text-gray-300">Protons</span>
+                <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.6)]"></span>
+                <span className="text-gray-300 font-medium">Protons (H⁺)</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-gray-300 animate-pulse"></span>
-                <span className="text-gray-300">Neutrons</span>
+                <span className="inline-block w-2.5 h-2.5 rounded-full bg-white animate-pulse shadow-[0_0_8px_rgba(255,255,255,0.4)]"></span>
+                <span className="text-gray-300 font-medium">Neutrons</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                <span className="text-gray-300">Electrons</span>
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.7)]"></span>
+                <span className="text-gray-300 font-medium">Electrons (e⁻)</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
-                <span className="text-gray-300">Helium-4</span>
+                <span className="inline-block w-3 h-3 rounded-full bg-orange-400 animate-pulse shadow-[0_0_10px_rgba(251,146,60,0.6)]"></span>
+                <span className="text-gray-300 font-medium">Deuterium (²H)</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
-                <span className="text-gray-300">Hydrogen</span>
+                <span className="inline-block w-3 h-3 rounded-full bg-orange-500 animate-pulse shadow-[0_0_10px_rgba(249,115,22,0.6)]"></span>
+                <span className="text-gray-300 font-medium">Tritium (³H)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-3.5 h-3.5 rounded-full bg-blue-500 animate-pulse shadow-[0_0_12px_rgba(59,130,246,0.6)]"></span>
+                <span className="text-gray-300 font-medium">Helium-3 (³He)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-4 h-4 rounded-full bg-blue-600 animate-pulse shadow-[0_0_12px_rgba(37,99,235,0.7)]"></span>
+                <span className="text-gray-300 font-medium">Helium-4 (⁴He)</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-3 h-3 rounded-full bg-yellow-400 animate-pulse shadow-[0_0_10px_rgba(250,204,21,0.6)]"></span>
+                <span className="text-gray-300 font-medium">Hydrogen (H)</span>
               </div>
             </div>
+
+            <div className="mt-3 text-xs text-gray-400 italic border-l-2 border-orange-500 pl-2">
+              Fusion reactions: D + p → ³He | D + n → ³T | ³He + ³He → ⁴He + 2p
+            </div>
+            
             <div className="mt-2 h-1 bg-linear-to-r from-yellow-500 via-orange-500 to-red-500 rounded animate-pulse"></div>
           </div>
         )}
@@ -119,26 +148,101 @@ export default function Home() {
               Event: Recombination Era
             </h2>
             <p className="text-cyan-300">Time: t = 380,000 years</p>
-            <p className="text-blue-400 font-semibold">Temp: ~3,000 K</p>
-            <p className="mt-2 text-sm text-cyan-200">Electrons combine with nuclei to form the first neutral atoms.</p>
-            <div className="mt-3 space-y-1 text-xs">
+            <p className="text-blue-400 font-semibold">Temp: 3,000 K → 2,725 K</p>
+            <p className="mt-2 text-sm text-cyan-200">Electrons orbit nuclei, forming the first neutral atoms.</p>
+            
+            <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs">
               <div className="flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-red-400 animate-pulse"></span>
-                <span className="text-gray-300">Protons (H nuclei)</span>
+                <span className="inline-block w-2.5 h-2.5 rounded-full bg-red-400 animate-pulse shadow-[0_0_8px_rgba(248,113,113,0.6)]"></span>
+                <span className="text-gray-300 font-medium">Protons (H⁺)</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
-                <span className="text-gray-300">Helium nuclei</span>
+                <span className="inline-block w-3 h-3 rounded-full bg-yellow-400 animate-pulse shadow-[0_0_10px_rgba(250,204,21,0.6)]"></span>
+                <span className="text-gray-300 font-medium">He nuclei (α)</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="inline-block w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-                <span className="text-gray-300">Electrons (capturing)</span>
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_rgba(34,211,238,0.8)]"></span>
+                <span className="text-gray-300 font-medium">Free electrons</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="relative inline-block">
+                  <span className="absolute w-3 h-3 rounded-full bg-cyan-400 opacity-30 animate-ping"></span>
+                  <span className="relative inline-block w-2 h-2 rounded-full bg-cyan-300"></span>
+                </div>
+                <span className="text-gray-300 font-medium">Orbital e⁻</span>
               </div>
             </div>
-            <p className="mt-3 text-xs text-purple-300 italic">
-              The universe becomes transparent. Light can now travel freely.
+
+            <div className="mt-3 p-2 bg-linear-to-r from-cyan-900/30 to-blue-900/30 rounded border border-cyan-500/30">
+              <p className="text-xs text-cyan-200 font-medium mb-1">⚛️ Atomic Formation:</p>
+              <div className="text-xs text-gray-300 space-y-0.5">
+                <div>• p⁺ + e⁻ → H (Hydrogen)</div>
+                <div>• α + 2e⁻ → He (Helium)</div>
+              </div>
+            </div>
+
+            <p className="mt-3 text-xs text-purple-300 italic border-l-2 border-purple-500 pl-2">
+              🌟 Universe becomes transparent - photons decouple and travel freely!
             </p>
+            
             <div className="mt-2 h-1 bg-linear-to-r from-cyan-500 via-blue-500 to-purple-500 rounded animate-pulse"></div>
+          </div>
+        )}
+        {epoch === 'darkages' && (
+          <div className="opacity-0 animate-fadeIn">
+            <h2 className="text-xl font-bold mb-1 bg-linear-to-r from-gray-600 via-gray-800 to-black bg-clip-text text-transparent drop-shadow-[0_0_10px_rgba(100,100,100,0.5)]">
+              Event: The Dark Ages
+            </h2>
+            <p className="text-gray-500">Time: t = 380,000 - 150 million years</p>
+            <p className="text-gray-600 font-semibold">Temp: 2,725 K → 60 K (cooling)</p>
+            <p className="mt-2 text-sm text-gray-400">The universe enters a period of darkness and silence.</p>
+            
+            <div className="mt-3 p-2.5 bg-black/40 rounded border border-gray-700/50">
+              <p className="text-xs text-gray-300 mb-2 font-medium">🌑 Characteristics:</p>
+              <div className="text-xs text-gray-400 space-y-1">
+                <div className="flex items-start gap-2">
+                  <span className="text-gray-600">•</span>
+                  <span>No stars, no galaxies, no light sources</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-gray-600">•</span>
+                  <span>CMB fades as universe expands</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-gray-600">•</span>
+                  <span>Neutral hydrogen fills all of space</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-gray-600">•</span>
+                  <span>Gravity slowly pulls matter together</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-2 h-2 rounded-full bg-gray-700 animate-pulse shadow-[0_0_6px_rgba(75,85,99,0.4)]"></span>
+                <span className="text-gray-400 font-medium">H atoms</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-2 h-2 rounded-full bg-gray-800 animate-pulse shadow-[0_0_6px_rgba(31,41,55,0.3)]"></span>
+                <span className="text-gray-400 font-medium">He atoms</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-gray-600 opacity-50"></span>
+                <span className="text-gray-500 font-medium">Dark matter</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-1 h-1 rounded-full bg-gray-900 opacity-30"></span>
+                <span className="text-gray-500 font-medium">Void</span>
+              </div>
+            </div>
+
+            <p className="mt-3 text-xs text-gray-500 italic border-l-2 border-gray-700 pl-2">
+              ⏳ The cosmic dark ages - a silent universe waiting for the first stars to ignite...
+            </p>
+            
+            <div className="mt-2 h-1 bg-linear-to-r from-gray-800 via-gray-900 to-black rounded opacity-50"></div>
           </div>
         )}
       </div>
@@ -203,6 +307,25 @@ export default function Home() {
             </button>
           )}
 
+          {epoch === 'recombination' && (
+            <button 
+              onClick={handleTransitionToDarkAges}
+              disabled={isTransitioning}
+              className="relative text-white text-lg border-2 border-gray-600 px-8 py-4 rounded-lg font-mono
+                         hover:bg-gray-800 hover:text-gray-300 hover:shadow-[0_0_30px_rgba(75,85,99,0.5)]
+                         transition-all duration-300 transform hover:scale-105
+                         disabled:opacity-50 disabled:cursor-not-allowed
+                         before:absolute before:inset-0 before:rounded-lg before:bg-gray-700 before:opacity-0
+                         hover:before:opacity-10 before:transition-opacity"
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                <span className="inline-block w-2 h-2 bg-gray-500 rounded-full animate-pulse"></span>
+                [ Enter the Dark Ages ]
+                <span className="inline-block w-2 h-2 bg-gray-500 rounded-full animate-pulse"></span>
+              </span>
+            </button>
+          )}
+
         </div>
       )}
 
@@ -211,7 +334,9 @@ export default function Home() {
         <div className="absolute inset-0 pointer-events-none z-20">
           <div className="absolute inset-0 animate-pulseSlow" 
                style={{
-                 background: epoch === 'recombination' 
+                 background: epoch === 'darkages'
+                   ? 'radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(20,20,30,0.6) 50%, transparent 100%)'
+                   : epoch === 'recombination' 
                    ? 'radial-gradient(circle, rgba(34,211,238,0.1) 0%, rgba(147,51,234,0.05) 50%, transparent 100%)'
                    : 'radial-gradient(circle, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%)'
                }}>
@@ -242,23 +367,34 @@ export default function Home() {
         <EffectComposer multisampling={4}>
           <Bloom 
             intensity={bloomIntensity}
-            luminanceThreshold={epoch === 'recombination' ? 0.3 : 0.5}
-            luminanceSmoothing={epoch === 'recombination' ? 0.9 : 0.8}
+            luminanceThreshold={
+              epoch === 'darkages' ? 0.9 :
+              epoch === 'recombination' ? 0.3 : 0.5
+            }
+            luminanceSmoothing={
+              epoch === 'darkages' ? 0.95 :
+              epoch === 'recombination' ? 0.9 : 0.8
+            }
             mipmapBlur 
           />
           <ChromaticAberration 
             ref={chromaticRef}
             offset={[0, 0]}
           />
-          <Noise opacity={epoch === 'recombination' ? 0.02 : 0.03} />
+          <Noise opacity={
+            epoch === 'darkages' ? 0.05 :
+            epoch === 'recombination' ? 0.02 : 0.03
+          } />
           <Vignette 
             eskil={false} 
             offset={
+              epoch === 'darkages' ? 0.3 :
               epoch === 'recombination' ? 0.15 : 
               epoch === 'nucleosynthesis' ? 0.08 : 
               epoch === 'plasma' ? 0.05 : 0.1
             } 
             darkness={
+              epoch === 'darkages' ? 1.2 :
               epoch === 'recombination' ? 0.8 : 
               epoch === 'nucleosynthesis' ? 0.7 : 
               epoch === 'plasma' ? 0.6 : 0.5

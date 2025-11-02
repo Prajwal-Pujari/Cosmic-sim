@@ -1,28 +1,31 @@
-// Optimized Recombination with stunning visuals and physics accuracy
+// ENHANCED Recombination - Cinematic Physics & Visuals
 
 import { useRef, useMemo, useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Instance, Instances } from '@react-three/drei';
-import { Vector3, Color, Object3D, MathUtils } from 'three';
+import { Vector3, Color, Object3D } from 'three';
 import { gsap } from 'gsap';
 
 const PARTICLE_TYPES = {
-  proton: { color: new Color('#ff4444'), radius: 0.15, charge: 1, mass: 1 },
-  helium: { color: new Color('#ffbb00'), radius: 0.22, charge: 2, mass: 4 },
-  electron: { color: new Color('#00ddff'), radius: 0.05, charge: -1, mass: 0.0005 },
+  proton: { color: new Color('#ff3355'), radius: 0.18, charge: 1, mass: 1, glow: '#ff6688' },
+  helium: { color: new Color('#ffcc00'), radius: 0.25, charge: 2, mass: 4, glow: '#ffee66' },
+  electron: { color: new Color('#00eeff'), radius: 0.06, charge: -1, mass: 0.0005, glow: '#88ffff' },
 };
 
-const PROTON_COUNT = 100;
-const HELIUM_COUNT = 30;
-const BOX_SIZE = 14;
-const TEMPERATURE_INITIAL = 3000; // Kelvin
-const COULOMB_CONSTANT = 0.15;
+const PROTON_COUNT = 120;
+const HELIUM_COUNT = 35;
+const BOX_SIZE = 18;
+const TEMPERATURE_START = 3000;
+const TEMPERATURE_END = 2725;
+const COULOMB_K = 0.22;
 
 interface Nucleus {
   id: number;
   type: 'proton' | 'helium';
   position: Vector3;
   velocity: Vector3;
+  capturedElectrons: number;
+  maxElectrons: number;
 }
 
 interface Electron {
@@ -33,7 +36,11 @@ interface Electron {
   orbitPhase: number;
   orbitRadius: number;
   orbitSpeed: number;
+  orbitAxis: Vector3;
+  orbitTilt: Vector3;
   captured: boolean;
+  captureProgress: number;
+  energyLevel: number;
 }
 
 export default function Recombination({
@@ -47,9 +54,12 @@ export default function Recombination({
   const groupRef = useRef<any>(null);
   const nucleiRef = useRef<any>(null);
   const electronsRef = useRef<any>(null);
+  const glowNucleiRef = useRef<any>(null);
+  const glowElectronsRef = useRef<any>(null);
   const animationStartedRef = useRef(false);
-  const temperatureRef = useRef(TEMPERATURE_INITIAL);
+  const temperatureRef = useRef(TEMPERATURE_START);
   const phaseRef = useRef(0);
+  const timeRef = useRef(0);
 
   const nuclei = useMemo<Nucleus[]>(() => {
     const atoms: Nucleus[] = [];
@@ -57,7 +67,7 @@ export default function Recombination({
       const type = i < PROTON_COUNT ? 'proton' : 'helium';
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(2 * Math.random() - 1);
-      const r = Math.random() * BOX_SIZE * 0.4;
+      const r = Math.pow(Math.random(), 0.6) * BOX_SIZE * 0.38;
       
       atoms.push({
         id: i,
@@ -68,10 +78,12 @@ export default function Recombination({
           r * Math.cos(phi)
         ),
         velocity: new Vector3(
-          (Math.random() - 0.5) * 0.5,
-          (Math.random() - 0.5) * 0.5,
-          (Math.random() - 0.5) * 0.5
-        )
+          (Math.random() - 0.5) * 0.7,
+          (Math.random() - 0.5) * 0.7,
+          (Math.random() - 0.5) * 0.7
+        ),
+        capturedElectrons: 0,
+        maxElectrons: type === 'proton' ? 1 : 2
       });
     }
     return atoms;
@@ -85,7 +97,19 @@ export default function Recombination({
       const numElectrons = nucleus.type === 'proton' ? 1 : 2;
       for (let i = 0; i < numElectrons; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const distance = 3 + Math.random() * 5;
+        const distance = 5 + Math.random() * 7;
+        const orbitAxis = new Vector3(
+          Math.random() - 0.5,
+          Math.random() - 0.5,
+          Math.random() - 0.5
+        ).normalize();
+        
+        const orbitTilt = new Vector3(
+          Math.random() - 0.5,
+          Math.random() - 0.5,
+          Math.random() - 0.5
+        ).normalize();
+        
         elecs.push({
           id: electronId++,
           position: new Vector3(
@@ -94,15 +118,19 @@ export default function Recombination({
             nucleus.position.z + (Math.random() - 0.5) * distance
           ),
           velocity: new Vector3(
-            (Math.random() - 0.5) * 3,
-            (Math.random() - 0.5) * 3,
-            (Math.random() - 0.5) * 3
+            (Math.random() - 0.5) * 5,
+            (Math.random() - 0.5) * 5,
+            (Math.random() - 0.5) * 5
           ),
           targetNucleus: nucleusIdx,
           orbitPhase: Math.random() * Math.PI * 2,
-          orbitRadius: PARTICLE_TYPES[nucleus.type].radius + 0.3 + (i * 0.2),
-          orbitSpeed: 3.0 + Math.random() * 2.0,
-          captured: false
+          orbitRadius: PARTICLE_TYPES[nucleus.type].radius + 0.4 + (i * 0.3),
+          orbitSpeed: 4.0 + Math.random() * 3.0,
+          orbitAxis,
+          orbitTilt,
+          captured: false,
+          captureProgress: 0,
+          energyLevel: 1.0
         });
       }
     });
@@ -113,44 +141,50 @@ export default function Recombination({
     if (!isVisible || animationStartedRef.current) return;
     
     animationStartedRef.current = true;
-    console.log("Starting Recombination sequence...");
+    console.log("🌌 Starting Recombination Era - Universe becomes transparent...");
     
     const tl = gsap.timeline({
       onComplete: () => {
-        console.log("Recombination complete.");
+        console.log("✨ Recombination complete - First light can travel freely!");
         onComplete?.();
       }
     });
 
-    // Cinematic camera journey
-    tl.to(camera.position, { x: -10, y: 8, z: 16, duration: 2.5, ease: 'power2.out' }, 0);
-    tl.to(camera.rotation, { x: -0.4, y: -0.5, z: -0.1, duration: 2.5, ease: 'power2.out' }, 0);
-    tl.to(camera, { fov: 60, duration: 2.5, ease: 'power2.out', onUpdate: () => camera.updateProjectionMatrix() }, 0);
+    // PHASE 1: Hot Chaos (0-4s)
+    tl.to(camera.position, { x: -14, y: 12, z: 20, duration: 3.5, ease: 'power2.out' }, 0);
+    tl.to(camera.rotation, { x: -0.5, y: -0.6, z: -0.15, duration: 3.5, ease: 'power2.out' }, 0);
+    tl.to(camera, { fov: 58, duration: 3.5, ease: 'power2.out', onUpdate: () => camera.updateProjectionMatrix() }, 0);
 
-    tl.call(() => { phaseRef.current = 1; }, [], 1.5);
+    tl.call(() => { phaseRef.current = 1; }, [], 2.5);
 
-    tl.to(camera.position, { x: 7, y: 4, z: 12, duration: 3.5, ease: 'power1.inOut' }, 3);
-    tl.to(camera.rotation, { x: -0.25, y: 0.4, z: 0.08, duration: 3.5, ease: 'power1.inOut' }, 3);
-    tl.to(camera, { fov: 45, duration: 3.5, ease: 'power2.in', onUpdate: () => camera.updateProjectionMatrix() }, 3);
+    // PHASE 2: Attraction Begins (4-9s)
+    tl.to(camera.position, { x: 10, y: 6, z: 16, duration: 5, ease: 'power1.inOut' }, 4);
+    tl.to(camera.rotation, { x: -0.32, y: 0.5, z: 0.12, duration: 5, ease: 'power1.inOut' }, 4);
+    tl.to(camera, { fov: 42, duration: 5, ease: 'power2.in', onUpdate: () => camera.updateProjectionMatrix() }, 4);
 
-    tl.call(() => { phaseRef.current = 2; }, [], 4);
+    tl.call(() => { phaseRef.current = 2; }, [], 6);
 
-    tl.to(camera.position, { x: -4, y: -3, z: 14, duration: 3.5, ease: 'power1.inOut' }, 6.5);
-    tl.to(camera.rotation, { x: 0.15, y: -0.25, z: -0.05, duration: 3.5, ease: 'power1.inOut' }, 6.5);
+    // PHASE 3: Atom Formation (9-14s)
+    tl.to(camera.position, { x: -6, y: -5, z: 18, duration: 5, ease: 'power1.inOut' }, 9);
+    tl.to(camera.rotation, { x: 0.22, y: -0.32, z: -0.08, duration: 5, ease: 'power1.inOut' }, 9);
+    tl.to(camera, { fov: 52, duration: 5, ease: 'sine.inOut', onUpdate: () => camera.updateProjectionMatrix() }, 9);
 
-    tl.to(camera.position, { x: 0, y: 0, z: 18, duration: 3, ease: 'power2.inOut' }, 10);
-    tl.to(camera.rotation, { x: 0, y: 0, z: 0, duration: 3, ease: 'power2.inOut' }, 10);
-    tl.to(camera, { fov: 65, duration: 3, ease: 'power2.out', onUpdate: () => camera.updateProjectionMatrix() }, 10);
+    // PHASE 4: Transparency Emerges (14-19s)
+    tl.to(camera.position, { x: 0, y: 0, z: 24, duration: 5, ease: 'power2.inOut' }, 14);
+    tl.to(camera.rotation, { x: 0, y: 0, z: 0, duration: 5, ease: 'power2.inOut' }, 14);
+    tl.to(camera, { fov: 72, duration: 5, ease: 'power2.out', onUpdate: () => camera.updateProjectionMatrix() }, 14);
 
-    tl.call(() => { phaseRef.current = 3; }, [], 10.5);
+    tl.call(() => { phaseRef.current = 3; }, [], 15);
 
+    // Universe rotation
     if (groupRef.current) {
-      tl.to(groupRef.current.rotation, { y: Math.PI * 0.3, x: Math.PI * 0.15, duration: 5, ease: 'power1.inOut' }, 2);
-      tl.to(groupRef.current.rotation, { y: Math.PI * 0.6, x: -Math.PI * 0.1, duration: 5, ease: 'power1.inOut' }, 7);
-      tl.to(groupRef.current.rotation, { x: 0, y: 0, duration: 3, ease: 'power2.out' }, 11);
+      tl.to(groupRef.current.rotation, { y: Math.PI * 0.4, x: Math.PI * 0.2, duration: 7, ease: 'power1.inOut' }, 2);
+      tl.to(groupRef.current.rotation, { y: Math.PI * 0.8, x: -Math.PI * 0.15, duration: 6, ease: 'power1.inOut' }, 9);
+      tl.to(groupRef.current.rotation, { x: 0, y: 0, duration: 4, ease: 'power2.out' }, 15);
     }
 
-    tl.to(temperatureRef, { current: 300, duration: 12, ease: 'power2.inOut' }, 0);
+    // Temperature evolution
+    tl.to(temperatureRef, { current: TEMPERATURE_END, duration: 19, ease: 'power1.out' }, 0);
 
   }, [isVisible, camera, onComplete]);
 
@@ -158,132 +192,207 @@ export default function Recombination({
     if (!isVisible || !nucleiRef.current || !electronsRef.current) return;
 
     const time = state.clock.elapsedTime;
+    timeRef.current = time;
     const dummy = new Object3D();
     const phase = phaseRef.current;
     const temp = temperatureRef.current;
-    const coolingFactor = temp / TEMPERATURE_INITIAL;
+    const coolingFactor = (temp - TEMPERATURE_END) / (TEMPERATURE_START - TEMPERATURE_END);
 
     // Update nuclei
     nuclei.forEach((nucleus, i) => {
-      if (phase < 2) {
-        const thermalVelocity = Math.sqrt(temp / 1000) * 0.01;
-        nucleus.velocity.x += (Math.random() - 0.5) * thermalVelocity;
-        nucleus.velocity.y += (Math.random() - 0.5) * thermalVelocity;
-        nucleus.velocity.z += (Math.random() - 0.5) * thermalVelocity;
-        nucleus.velocity.multiplyScalar(0.99);
+      if (phase < 3) {
+        const thermalV = Math.sqrt(temp / 1000) * 0.014;
+        nucleus.velocity.x += (Math.random() - 0.5) * thermalV;
+        nucleus.velocity.y += (Math.random() - 0.5) * thermalV;
+        nucleus.velocity.z += (Math.random() - 0.5) * thermalV;
+        nucleus.velocity.multiplyScalar(0.983);
         nucleus.position.add(nucleus.velocity.clone().multiplyScalar(delta));
 
-        if (nucleus.position.length() > BOX_SIZE * 0.5) {
-          nucleus.velocity.multiplyScalar(-0.3);
+        const dist = nucleus.position.length();
+        if (dist > BOX_SIZE * 0.47) {
+          const force = nucleus.position.clone().normalize().multiplyScalar(-0.025);
+          nucleus.velocity.add(force);
         }
       }
 
+      // Render nucleus
       dummy.position.copy(nucleus.position);
-      const glow = 1 + Math.sin(time * 2 + i * 0.5) * 0.15;
-      dummy.scale.setScalar(PARTICLE_TYPES[nucleus.type].radius * glow);
+      const completionGlow = (nucleus.capturedElectrons / nucleus.maxElectrons);
+      const breathe = 1 + Math.sin(time * 2.2 + i * 0.8) * (0.15 - completionGlow * 0.08);
+      const scale = PARTICLE_TYPES[nucleus.type].radius * breathe * (1 + completionGlow * 0.2);
+      dummy.scale.setScalar(scale);
       dummy.updateMatrix();
       nucleiRef.current.setMatrixAt(i, dummy.matrix);
+
+      // Glow layer
+      dummy.scale.setScalar(scale * (1.9 + completionGlow * 0.3));
+      dummy.updateMatrix();
+      glowNucleiRef.current.setMatrixAt(i, dummy.matrix);
     });
     nucleiRef.current.instanceMatrix.needsUpdate = true;
+    glowNucleiRef.current.instanceMatrix.needsUpdate = true;
 
-    // Update electrons with Coulomb physics
+    // Update electrons
     electrons.forEach((electron, i) => {
       const nucleus = nuclei[electron.targetNucleus];
       
-      if (phase === 0 || (phase === 1 && !electron.captured)) {
-        // Free electron motion with thermal energy
-        const thermalSpeed = Math.sqrt(temp / 100) * 0.02;
-        electron.velocity.x += (Math.random() - 0.5) * thermalSpeed;
-        electron.velocity.y += (Math.random() - 0.5) * thermalSpeed;
-        electron.velocity.z += (Math.random() - 0.5) * thermalSpeed;
+      if (!electron.captured && phase >= 1) {
+        // Free electron thermal motion
+        const thermalV = Math.sqrt(temp / 120) * 0.028;
+        electron.velocity.x += (Math.random() - 0.5) * thermalV;
+        electron.velocity.y += (Math.random() - 0.5) * thermalV;
+        electron.velocity.z += (Math.random() - 0.5) * thermalV;
         
         // Coulomb attraction
         const toNucleus = nucleus.position.clone().sub(electron.position);
         const distance = toNucleus.length();
         
-        if (phase === 1 && distance < 5) {
-          const forceMagnitude = (COULOMB_CONSTANT * PARTICLE_TYPES[nucleus.type].charge) / (distance * distance + 0.1);
-          const force = toNucleus.normalize().multiplyScalar(forceMagnitude * (1 - coolingFactor * 0.5));
+        if (distance < 10) {
+          const charge = PARTICLE_TYPES[nucleus.type].charge;
+          const forceMag = (COULOMB_K * charge) / (distance * distance + 0.18);
+          const coolingEffect = 1 - coolingFactor * 0.7;
+          const force = toNucleus.normalize().multiplyScalar(forceMag * coolingEffect);
           electron.velocity.add(force);
           
-          if (distance < electron.orbitRadius * 1.5) {
+          // Capture mechanics
+          const captureThreshold = electron.orbitRadius * (2.0 - coolingFactor * 0.6);
+          if (distance < captureThreshold && phase >= 2 && nucleus.capturedElectrons < nucleus.maxElectrons) {
             electron.captured = true;
+            electron.captureProgress = 0;
+            nucleus.capturedElectrons++;
+            electron.energyLevel = 1.5;
           }
         }
         
-        electron.velocity.multiplyScalar(0.98);
+        electron.velocity.multiplyScalar(0.972);
         electron.position.add(electron.velocity.clone().multiplyScalar(delta));
 
-        if (electron.position.length() > BOX_SIZE * 0.6) {
-          electron.velocity.multiplyScalar(-0.4);
+        const dist = electron.position.length();
+        if (dist > BOX_SIZE * 0.65) {
+          const bounce = electron.position.clone().normalize().multiplyScalar(-0.06);
+          electron.velocity.add(bounce);
         }
-      } else if (electron.captured || phase >= 2) {
-        // Orbital mechanics
-        electron.orbitPhase += electron.orbitSpeed * delta * (1 + coolingFactor * 0.5);
+      } else if (electron.captured || phase >= 3) {
+        // Captured electron orbital motion
+        if (!electron.captured) {
+          electron.captured = true;
+          electron.captureProgress = 0;
+        }
         
-        const inclination = Math.sin(time * 0.5 + i) * 0.3;
-        const offsetX = Math.cos(electron.orbitPhase) * electron.orbitRadius;
-        const offsetY = Math.sin(electron.orbitPhase) * electron.orbitRadius * Math.cos(inclination);
-        const offsetZ = Math.sin(electron.orbitPhase) * electron.orbitRadius * Math.sin(inclination);
+        electron.captureProgress = Math.min(1, electron.captureProgress + delta * 0.8);
+        electron.energyLevel = Math.max(0.3, electron.energyLevel - delta * 0.3);
         
-        electron.position.set(
-          nucleus.position.x + offsetX,
-          nucleus.position.y + offsetY,
-          nucleus.position.z + offsetZ
-        );
+        electron.orbitPhase += electron.orbitSpeed * delta * (1 + coolingFactor * 0.4);
+        
+        // 3D orbital with precession
+        const axis = electron.orbitAxis;
+        const tilt = electron.orbitTilt;
+        const precession = time * 0.3 + i * 0.4;
+        const wobble = Math.sin(time * 0.6 + i * 0.6) * 0.25;
+        
+        const perpAxis = new Vector3().crossVectors(axis, tilt).normalize();
+        
+        const radiusMod = electron.orbitRadius * (1 + electron.energyLevel * 0.2);
+        const offsetX = Math.cos(electron.orbitPhase) * radiusMod;
+        const offsetY = Math.sin(electron.orbitPhase) * radiusMod;
+        const offsetZ = Math.sin(electron.orbitPhase * 2 + precession) * radiusMod * 0.3;
+        
+        const orbitPos = new Vector3()
+          .addScaledVector(perpAxis, offsetX)
+          .addScaledVector(axis, offsetY * (0.65 + wobble))
+          .addScaledVector(tilt, offsetZ);
+        
+        const targetPos = nucleus.position.clone().add(orbitPos);
+        electron.position.lerp(targetPos, 0.15 * electron.captureProgress);
       }
 
+      // Render electron
       dummy.position.copy(electron.position);
-      const pulse = 1 + Math.sin(time * 10 + i * 0.3) * 0.3;
-      const trailEffect = electron.captured ? 1.2 : 0.8;
-      dummy.scale.setScalar(PARTICLE_TYPES.electron.radius * pulse * trailEffect);
+      const energyPulse = 1 + Math.sin(time * 14 + i * 0.5) * (0.4 * electron.energyLevel);
+      const captureScale = electron.captured ? (1.2 + electron.captureProgress * 0.2) : 0.8;
+      const scale = PARTICLE_TYPES.electron.radius * energyPulse * captureScale;
+      dummy.scale.setScalar(scale);
       dummy.updateMatrix();
       electronsRef.current.setMatrixAt(i, dummy.matrix);
+
+      // Glow layer
+      const glowIntensity = electron.captured ? (2.8 + electron.energyLevel * 0.8) : 2.3;
+      dummy.scale.setScalar(scale * glowIntensity);
+      dummy.updateMatrix();
+      glowElectronsRef.current.setMatrixAt(i, dummy.matrix);
     });
     electronsRef.current.instanceMatrix.needsUpdate = true;
+    glowElectronsRef.current.instanceMatrix.needsUpdate = true;
   });
 
   if (!isVisible) return null;
 
   return (
     <group ref={groupRef}>
+      {/* Nuclei - Main */}
       <Instances ref={nucleiRef} limit={nuclei.length} range={nuclei.length}>
-        <sphereGeometry args={[1, 24, 24]} />
+        <sphereGeometry args={[1, 32, 32]} />
         <meshStandardMaterial
           emissive={PARTICLE_TYPES.proton.color}
-          emissiveIntensity={0.6}
-          roughness={0.2}
-          metalness={0.4}
+          emissiveIntensity={0.9}
+          roughness={0.12}
+          metalness={0.6}
         />
-        {nuclei.map((nucleus) => (
-          <Instance
-            key={nucleus.id}
-            position={nucleus.position}
-            color={PARTICLE_TYPES[nucleus.type].color}
-          />
+        {nuclei.map((n) => (
+          <Instance key={n.id} position={n.position} color={PARTICLE_TYPES[n.type].color} />
         ))}
       </Instances>
 
-      <Instances ref={electronsRef} limit={electrons.length} range={electrons.length}>
+      {/* Nuclei - Glow */}
+      <Instances ref={glowNucleiRef} limit={nuclei.length} range={nuclei.length}>
         <sphereGeometry args={[1, 16, 16]} />
+        <meshBasicMaterial transparent opacity={0.35} depthWrite={false} blending={2} />
+        {nuclei.map((n) => (
+          <Instance key={`glow-${n.id}`} position={n.position} color={PARTICLE_TYPES[n.type].glow} />
+        ))}
+      </Instances>
+
+      {/* Electrons - Main */}
+      <Instances ref={electronsRef} limit={electrons.length} range={electrons.length}>
+        <sphereGeometry args={[1, 24, 24]} />
         <meshStandardMaterial
           color={PARTICLE_TYPES.electron.color}
           emissive={PARTICLE_TYPES.electron.color}
-          emissiveIntensity={1.5}
+          emissiveIntensity={2.2}
           roughness={0}
           metalness={1}
           toneMapped={false}
         />
-        {electrons.map((electron) => (
-          <Instance key={electron.id} position={electron.position} />
+        {electrons.map((e) => (
+          <Instance key={e.id} position={e.position} />
         ))}
       </Instances>
 
-      <ambientLight intensity={0.4} color="#fff5e6" />
-      <pointLight position={[15, 15, 15]} intensity={2} color="#ffaa66" distance={30} decay={2} />
-      <pointLight position={[-15, -15, -15]} intensity={1.8} color="#6699ff" distance={30} decay={2} />
-      <pointLight position={[0, 20, 0]} intensity={2.5} color="#ffffff" distance={25} decay={2} />
-      <hemisphereLight intensity={0.5} color="#87ceeb" groundColor="#1a1a2e" />
+      {/* Electrons - Glow */}
+      <Instances ref={glowElectronsRef} limit={electrons.length} range={electrons.length}>
+        <sphereGeometry args={[1, 12, 12]} />
+        <meshBasicMaterial
+          color={PARTICLE_TYPES.electron.glow}
+          transparent
+          opacity={0.45}
+          depthWrite={false}
+          blending={2}
+        />
+        {electrons.map((e) => (
+          <Instance key={`glow-${e.id}`} position={e.position} />
+        ))}
+      </Instances>
+
+      {/* Enhanced Lighting */}
+      <ambientLight intensity={0.55} color="#fff9f2" />
+      <pointLight position={[22, 22, 22]} intensity={3.5} color="#ffb588" distance={45} decay={2} />
+      <pointLight position={[-22, -22, -22]} intensity={3} color="#88bbff" distance={45} decay={2} />
+      <pointLight position={[0, 28, 0]} intensity={4} color="#ffffff" distance={40} decay={2} />
+      <pointLight position={[18, -18, 18]} intensity={2.5} color="#ff99bb" distance={35} decay={2} />
+      <pointLight position={[-15, 20, -15]} intensity={2.8} color="#99ddff" distance={38} decay={2} />
+      <hemisphereLight intensity={0.7} color="#b5e5ff" groundColor="#3a2050" />
+      <spotLight position={[0, 35, 0]} angle={0.45} penumbra={1} intensity={2.5} color="#fffffa" distance={55} decay={2} />
+      <spotLight position={[25, 15, -20]} angle={0.5} penumbra={0.8} intensity={2} color="#ffd5aa" distance={50} decay={2} />
     </group>
   );
 }
