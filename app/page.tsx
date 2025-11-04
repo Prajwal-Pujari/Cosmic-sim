@@ -44,16 +44,23 @@ export default function Home() {
     }, 25000)
   }
 
- const handleTransitionToDarkAges = () => {
-  setIsTransitioning(true)
-  sceneRef.current?.transitionToDarkAges()
-  
-  // Update timeout from 43000 to 46000 (45 seconds animation + 1 second buffer)
-  setTimeout(() => {
-    setIsTransitioning(false)
-  }, 46000)
-}
-  
+  const handleTransitionToDarkAges = () => {
+    setIsTransitioning(true)
+    sceneRef.current?.transitionToDarkAges()
+    
+    setTimeout(() => {
+      setIsTransitioning(false)
+    }, 46000)
+  }
+
+  const handleTransitionToCosmicDawn = () => {
+    setIsTransitioning(true)
+    sceneRef.current?.transitionToCosmicDawn()
+    
+    setTimeout(() => {
+      setIsTransitioning(false)
+    }, 15000) // Cosmic Dawn animation duration
+  }
 
   return (
     <div className="relative w-screen h-screen bg-black overflow-hidden">
@@ -197,28 +204,6 @@ export default function Home() {
             <p className="text-gray-600 font-semibold">Temp: 2,725 K → 60 K (cooling)</p>
             <p className="mt-2 text-sm text-gray-400">The universe enters a period of darkness and silence.</p>
             
-            <div className="mt-3 p-2.5 bg-black/40 rounded border border-gray-700/50">
-              <p className="text-xs text-gray-300 mb-2 font-medium">🌑 Characteristics:</p>
-              <div className="text-xs text-gray-400 space-y-1">
-                <div className="flex items-start gap-2">
-                  <span className="text-gray-600">•</span>
-                  <span>No stars, no galaxies, no light sources</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-gray-600">•</span>
-                  <span>CMB fades as universe expands</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-gray-600">•</span>
-                  <span>Neutral hydrogen fills all of space</span>
-                </div>
-                <div className="flex items-start gap-2">
-                  <span className="text-gray-600">•</span>
-                  <span>Gravity slowly pulls matter together</span>
-                </div>
-              </div>
-            </div>
-
             <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
               <div className="flex items-center gap-2">
                 <span className="inline-block w-2 h-2 rounded-full bg-gray-700 animate-pulse shadow-[0_0_6px_rgba(75,85,99,0.4)]"></span>
@@ -243,6 +228,59 @@ export default function Home() {
             </p>
             
             <div className="mt-2 h-1 bg-linear-to-r from-gray-800 via-gray-900 to-black rounded opacity-50"></div>
+          </div>
+        )}
+        {epoch === 'cosmicdawn' && (
+          <div className="opacity-0 animate-fadeIn">
+            <h2 className="text-xl font-bold mb-1 bg-linear-to-r from-blue-300 via-white to-purple-300 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(200,220,255,0.8)]">
+              Event: Cosmic Dawn
+            </h2>
+            <p className="text-blue-300">Time: t = 150 - 1,000 million years</p>
+            <p className="text-white font-semibold">Temp: 60 K → 10,000 K (reheating)</p>
+            <p className="mt-2 text-sm text-blue-200">The first stars ignite, breaking the cosmic silence!</p>
+            
+            <div className="mt-3 p-2.5 bg-blue-950/30 rounded border border-blue-500/40">
+              <p className="text-xs text-blue-200 mb-2 font-medium">✨ Dawn of Light:</p>
+              <div className="text-xs text-gray-300 space-y-1">
+                <div className="flex items-start gap-2">
+                  <span className="text-blue-400">⭐</span>
+                  <span>Population III stars (100-1000 M☉)</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-purple-400">💫</span>
+                  <span>Reionization begins - bubbles expand</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-white">🌟</span>
+                  <span>Proto-galaxies start to form</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+              {/* <div className="flex items-center gap-2">
+                <span className="inline-block w-3 h-3 rounded-full bg-blue-400 animate-pulse shadow-[0_0_10px_rgba(96,165,250,0.8)]"></span>
+                <span className="text-gray-300 font-medium">First stars</span>
+              </div> */}
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-2.5 h-2.5 rounded-full bg-purple-400 animate-pulse shadow-[0_0_8px_rgba(192,132,252,0.6)]"></span>
+                <span className="text-gray-300 font-medium">Ionized gas</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-2 h-2 rounded-full bg-white animate-pulse shadow-[0_0_12px_rgba(255,255,255,0.9)]"></span>
+                <span className="text-gray-300 font-medium">Stellar halos</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="inline-block w-2.5 h-2.5 rounded-full bg-blue-300 opacity-70 animate-pulse"></span>
+                <span className="text-gray-300 font-medium">Proto-galaxies</span>
+              </div>
+            </div>
+
+            <p className="mt-3 text-xs text-purple-300 italic border-l-2 border-blue-500 pl-2">
+              🌅 Let there be light - the universe awakens from darkness!
+            </p>
+            
+            <div className="mt-2 h-1 bg-linear-to-r from-blue-500 via-white to-purple-500 rounded animate-pulse shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
           </div>
         )}
       </div>
@@ -326,6 +364,26 @@ export default function Home() {
             </button>
           )}
 
+          {epoch === 'darkages' && (
+            <button 
+              onClick={handleTransitionToCosmicDawn}
+              disabled={isTransitioning}
+              className="relative text-white text-lg border-2 border-blue-400 px-8 py-4 rounded-lg font-mono
+                         hover:bg-blue-400 hover:text-black hover:shadow-[0_0_30px_rgba(96,165,250,0.8)]
+                         transition-all duration-300 transform hover:scale-105
+                         disabled:opacity-50 disabled:cursor-not-allowed
+                         before:absolute before:inset-0 before:rounded-lg before:bg-blue-400 before:opacity-0
+                         hover:before:opacity-10 before:transition-opacity
+                         shadow-[0_0_20px_rgba(96,165,250,0.3)]"
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                <span className="inline-block w-2 h-2 bg-blue-300 rounded-full animate-pulse shadow-[0_0_8px_rgba(147,197,253,0.8)]"></span>
+                [ Witness the First Stars ]
+                <span className="inline-block w-2 h-2 bg-blue-300 rounded-full animate-pulse shadow-[0_0_8px_rgba(147,197,253,0.8)]"></span>
+              </span>
+            </button>
+          )}
+
         </div>
       )}
 
@@ -334,7 +392,9 @@ export default function Home() {
         <div className="absolute inset-0 pointer-events-none z-20">
           <div className="absolute inset-0 animate-pulseSlow" 
                style={{
-                 background: epoch === 'darkages'
+                 background: epoch === 'cosmicdawn'
+                   ? 'radial-gradient(circle, rgba(96,165,250,0.15) 0%, rgba(147,51,234,0.08) 50%, transparent 100%)'
+                   : epoch === 'darkages'
                    ? 'radial-gradient(circle, rgba(0,0,0,0.8) 0%, rgba(20,20,30,0.6) 50%, transparent 100%)'
                    : epoch === 'recombination' 
                    ? 'radial-gradient(circle, rgba(34,211,238,0.1) 0%, rgba(147,51,234,0.05) 50%, transparent 100%)'
@@ -368,10 +428,12 @@ export default function Home() {
           <Bloom 
             intensity={bloomIntensity}
             luminanceThreshold={
+              epoch === 'cosmicdawn' ? 0.4 :
               epoch === 'darkages' ? 0.9 :
               epoch === 'recombination' ? 0.3 : 0.5
             }
             luminanceSmoothing={
+              epoch === 'cosmicdawn' ? 0.85 :
               epoch === 'darkages' ? 0.95 :
               epoch === 'recombination' ? 0.9 : 0.8
             }
@@ -382,18 +444,21 @@ export default function Home() {
             offset={[0, 0]}
           />
           <Noise opacity={
+            epoch === 'cosmicdawn' ? 0.015 :
             epoch === 'darkages' ? 0.05 :
             epoch === 'recombination' ? 0.02 : 0.03
           } />
           <Vignette 
             eskil={false} 
             offset={
+              epoch === 'cosmicdawn' ? 0.12 :
               epoch === 'darkages' ? 0.3 :
               epoch === 'recombination' ? 0.15 : 
               epoch === 'nucleosynthesis' ? 0.08 : 
               epoch === 'plasma' ? 0.05 : 0.1
             } 
             darkness={
+              epoch === 'cosmicdawn' ? 0.6 :
               epoch === 'darkages' ? 1.2 :
               epoch === 'recombination' ? 0.8 : 
               epoch === 'nucleosynthesis' ? 0.7 : 

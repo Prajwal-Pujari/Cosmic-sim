@@ -156,7 +156,7 @@ export default function CosmicMicrowaveBackground({
     uFluctuationIntensity: { value: showFluctuations ? 0.00003 : 0.0 },
     uGlowIntensity: { value: 0.2 },
     uTemperature: { value: 2.725 },
-    uResolution: { value: new THREE.Vector2(1024, 1024) }
+    // uResolution: { value: new THREE.Vector2(1024, 1024) }
   }), [activeTexture, opacity, showFluctuations]);
 
   useEffect(() => {
@@ -187,13 +187,13 @@ export default function CosmicMicrowaveBackground({
         vertexShader={`
           varying vec2 vUv;
           varying vec3 vNormal;
-          varying vec3 vPosition;
+          // varying vec3 vPosition;
           varying vec3 vWorldPosition;
           
           void main() {
             vUv = uv;
             vNormal = normalize(normalMatrix * normal);
-            vPosition = position;
+            // vPosition = position;
             vec4 worldPos = modelMatrix * vec4(position, 1.0);
             vWorldPosition = worldPos.xyz;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
@@ -206,11 +206,11 @@ export default function CosmicMicrowaveBackground({
           uniform float uFluctuationIntensity;
           uniform float uGlowIntensity;
           uniform float uTemperature;
-          uniform vec2 uResolution;
+          // uniform vec2 uResolution;
           
           varying vec2 vUv;
           varying vec3 vNormal;
-          varying vec3 vPosition;
+          // varying vec3 vPosition;
           varying vec3 vWorldPosition;
           
           // Accurate Planck blackbody spectrum visualization
