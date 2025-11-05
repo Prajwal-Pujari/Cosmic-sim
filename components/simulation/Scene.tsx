@@ -1279,264 +1279,351 @@ transitionToDarkAges() {
   }, [], 34.0)
 } , 
  transitionToCosmicDawn() {
-      if (!chromaticRef.current) return
-      
-      setEpoch('cosmicdawn')
-      controlsRef.current.enabled = false
-      
-      const tl = gsap.timeline({
-        onComplete: () => {
-          console.log("🌟 Cosmic Dawn - Let there be light!")
-        }
-      })
-
-      // 🎬 PROLOGUE: GATHER PERSPECTIVE (0-3s)
-      tl.to(camera.position, {
-        x: 0,
-        y: 12,
-        z: 60,
-        duration: 3.0,
-        ease: 'power1.out'
-      }, 0)
-
-      tl.to(camera.rotation, {
-        x: -0.18,
-        y: 0,
-        z: 0,
-        duration: 3.0,
-        ease: 'power1.out'
-      }, 0)
-
-      tl.to(camera, {
-        fov: 52,
-        duration: 3.0,
-        ease: 'power1.out',
-        onUpdate: () => camera.updateProjectionMatrix()
-      }, 0)
-
-      tl.to(universeRef.current.scale, {
-        x: 1.3,
-        y: 1.3,
-        z: 1.3,
-        duration: 3.0,
-        ease: 'power1.out'
-      }, 0)
-
-      tl.call(() => setBloomIntensity(0.1), [], 0)
-      tl.call(() => setBloomIntensity(0.15), [], 2.0)
-
-      // 🌅 ACT I: THE DAWN BEGINS (3-5s)
-      tl.call(() => {
-        setShowCosmicDawn(true)
-        setCosmicDawnFadeIn(0)
-      }, [], 3.0)
-
-      tl.to({ value: 0 }, {
-        value: 1,
-        duration: 2.0,
-        ease: 'power2.out',
-        onUpdate: function() {
-          setCosmicDawnFadeIn(this.targets()[0].value)
-        }
-      }, 3.0)
-
-      tl.call(() => setBloomIntensity(0.3), [], 3.5)
-      tl.call(() => setBloomIntensity(0.8), [], 4.5)
-
-      tl.to(chromaticRef.current.offset, {
-        x: 0.02,
-        y: 0.02,
-        duration: 0.4,
-        ease: 'power3.in'
-      }, 3.8)
-
-      tl.to(chromaticRef.current.offset, {
-        x: 0.005,
-        y: 0.005,
-        duration: 1.2,
-        ease: 'power2.out'
-      }, 4.2)
-
-      // 🎆 ACT II: ASCENDING REVELATION (5-11s)
-      tl.to(camera.position, {
-        x: -15,
-        y: 28,
-        z: 35,
-        duration: 6.0,
-        ease: 'power1.inOut'
-      }, 5.0)
-
-      tl.to(camera.rotation, {
-        x: -0.65,
-        y: -0.35,
-        z: -0.12,
-        duration: 6.0,
-        ease: 'power1.inOut'
-      }, 5.0)
-
-      tl.to(camera, {
-        fov: 58,
-        duration: 6.0,
-        ease: 'sine.inOut',
-        onUpdate: () => camera.updateProjectionMatrix()
-      }, 5.0)
-
-      tl.to(universeRef.current.rotation, {
-        x: Math.PI * 0.12,
-        y: Math.PI * 0.18,
-        z: Math.PI * 0.05,
-        duration: 6.0,
-        ease: 'power1.inOut'
-      }, 5.0)
-
-      tl.to(universeRef.current.scale, {
-        x: 1.6,
-        y: 1.6,
-        z: 1.6,
-        duration: 6.0,
-        ease: 'sine.inOut'
-      }, 5.0)
-
-      tl.call(() => setBloomIntensity(1.2), [], 6.0)
-      tl.call(() => setBloomIntensity(1.5), [], 8.5)
-
-      tl.to(chromaticRef.current.offset, {
-        x: 0.015,
-        y: 0.015,
-        duration: 0.6,
-        ease: 'power2.in'
-      }, 7.5)
-
-      tl.to(chromaticRef.current.offset, {
-        x: 0.003,
-        y: 0.003,
-        duration: 2.0,
-        ease: 'power1.out'
-      }, 8.1)
-
-      // 🌌 ACT III: SWEEPING ORBIT (11-19s)
-      tl.to(camera.position, {
-        x: 30,
-        y: 18,
-        z: 20,
-        duration: 8.0,
-        ease: 'power1.inOut'
-      }, 11.0)
-
-      tl.to(camera.rotation, {
-        x: -0.55,
-        y: Math.PI * 0.45,
-        z: 0.18,
-        duration: 8.0,
-        ease: 'power1.inOut'
-      }, 11.0)
-
-      tl.to(camera, {
-        fov: 50,
-        duration: 8.0,
-        ease: 'sine.inOut',
-        onUpdate: () => camera.updateProjectionMatrix()
-      }, 11.0)
-
-      tl.to(universeRef.current.rotation, {
-        x: -Math.PI * 0.08,
-        y: -Math.PI * 0.25,
-        z: -Math.PI * 0.08,
-        duration: 8.0,
-        ease: 'power1.inOut'
-      }, 11.0)
-
-      tl.to(universeRef.current.scale, {
-        x: 1.8,
-        y: 1.8,
-        z: 1.8,
-        duration: 8.0,
-        ease: 'sine.inOut'
-      }, 11.0)
-
-      tl.call(() => setBloomIntensity(1.8), [], 13.0)
-      tl.call(() => setBloomIntensity(2.2), [], 16.0)
-
-      tl.to(chromaticRef.current.offset, {
-        x: 0.025,
-        y: 0.025,
-        duration: 0.8,
-        ease: 'power3.in'
-      }, 14.0)
-
-      tl.to(chromaticRef.current.offset, {
-        x: 0.006,
-        y: 0.006,
-        duration: 2.5,
-        ease: 'power2.out'
-      }, 14.8)
-
-      // 🎭 ACT IV: MAJESTIC FINALE (19-28s)
-      tl.to(camera.position, {
-        x: 0,
-        y: 10,
-        z: 45,
-        duration: 9.0,
-        ease: 'power2.out'
-      }, 19.0)
-
-      tl.to(camera.rotation, {
-        x: -0.2,
-        y: 0,
-        z: 0,
-        duration: 9.0,
-        ease: 'power2.out'
-      }, 19.0)
-
-      tl.to(camera, {
-        fov: 55,
-        duration: 9.0,
-        ease: 'power2.out',
-        onUpdate: () => camera.updateProjectionMatrix()
-      }, 19.0)
-
-      tl.to(universeRef.current.rotation, {
-        x: 0,
-        y: 0,
-        z: 0,
-        duration: 9.0,
-        ease: 'power2.out'
-      }, 19.0)
-
-      tl.to(universeRef.current.scale, {
-        x: 1.4,
-        y: 1.4,
-        z: 1.4,
-        duration: 9.0,
-        ease: 'power2.out'
-      }, 19.0)
-
-      tl.to(chromaticRef.current.offset, {
-        x: 0,
-        y: 0,
-        duration: 5.0,
-        ease: 'power1.out'
-      }, 23.0)
-
-      tl.call(() => setBloomIntensity(2.0), [], 21.0)
-      tl.call(() => setBloomIntensity(1.8), [], 24.0)
-      tl.call(() => setBloomIntensity(1.6), [], 27.0)
-
-      // 🎮 Enable controls
-      tl.call(() => {
-        if (controlsRef.current) {
-          controlsRef.current.enabled = true
-          controlsRef.current.enableDamping = true
-          controlsRef.current.dampingFactor = 0.05
-          controlsRef.current.minDistance = 25
-          controlsRef.current.maxDistance = 70
-          controlsRef.current.enablePan = false
-          controlsRef.current.maxPolarAngle = Math.PI * 0.8
-          controlsRef.current.minPolarAngle = Math.PI * 0.2
-          controlsRef.current.rotateSpeed = 0.5
-        }
-      }, [], 28.0)
+  if (!chromaticRef.current) return
+  
+  setEpoch('cosmicdawn')
+  controlsRef.current.enabled = false
+  
+  const tl = gsap.timeline({
+    onComplete: () => {
+      console.log("🌟 Cosmic Dawn - Let there be light!")
     }
+  })
+
+  // 🎬 PROLOGUE: THE VOID BEFORE CREATION (0-5s)
+  // Pull VERY far back - we need to see the cosmic scale
+  tl.to(camera.position, {
+    x: 0,
+    y: 120,
+    z: 500,
+    duration: 5.0,
+    ease: 'power1.out'
+  }, 0)
+
+  tl.to(camera.rotation, {
+    x: -0.3,
+    y: 0,
+    z: 0,
+    duration: 5.0,
+    ease: 'power1.out'
+  }, 0)
+
+  tl.to(camera, {
+    fov: 55,
+    duration: 5.0,
+    ease: 'power1.out',
+    onUpdate: () => camera.updateProjectionMatrix()
+  }, 0)
+
+  tl.to(universeRef.current.scale, {
+    x: 1.0,
+    y: 1.0,
+    z: 1.0,
+    duration: 5.0,
+    ease: 'power1.out'
+  }, 0)
+  
+  tl.call(() => setBloomIntensity(0.05), [], 0)
+
+  
+  // 🌫️ ACT I: BIRTH CLOUDS GATHER (5-8s)
+  // Clouds appear in the darkness
+  tl.call(() => {
+    setShowCosmicDawn(true)
+    setCosmicDawnFadeIn(0)
+  }, [], 5.0)
+
+  tl.to({ value: 0 }, {
+    value: 1,
+    duration: 3.0,
+    ease: 'power2.in',
+    onUpdate: function() {
+      setCosmicDawnFadeIn(this.targets()[0].value)
+    }
+  }, 5.0)
+
+  // Camera drifts closer to witness the clouds
+  tl.to(camera.position, {
+    x: -40,
+    y: 60,
+    z: 200,
+    duration: 3.0,
+    ease: 'sine.inOut'
+  }, 5.0)
+
+  tl.to(camera.rotation, {
+    x: -0.28,
+    y: -0.15,
+    z: -0.05,
+    duration: 3.0,
+    ease: 'sine.inOut'
+  }, 5.0)
+
+  tl.call(() => setBloomIntensity(0.08), [], 6.0)
+  tl.call(() => setBloomIntensity(0.12), [], 7.5)
+
+  // 💫 ACT II: THE FIRST CORE FORMS (8-12s)
+  // Accretion disk becomes visible - something is happening!
+  // Camera gets MUCH closer before the explosion
+  tl.to(camera.position, {
+    x: -30,
+    y: 50,
+    z: 160,
+    duration: 4.0,
+    ease: 'power2.inOut'
+  }, 8.0)
+
+  tl.to(camera.rotation, {
+    x: -0.3,
+    y: -0.12,
+    z: -0.03,
+    duration: 4.0,
+    ease: 'power2.inOut'
+  }, 8.0)
+
+  tl.to(camera, {
+    fov: 58,
+    duration: 4.0,
+    ease: 'sine.inOut',
+    onUpdate: () => camera.updateProjectionMatrix()
+  }, 8.0)
+
+  tl.call(() => setBloomIntensity(0.18), [], 8.5)
+  tl.call(() => setBloomIntensity(0.25), [], 10.0)
+  tl.call(() => setBloomIntensity(0.35), [], 11.5)
+
+  // 🔥💥 ACT III: EXPLOSION! CAMERA BLOWN BACK! (12-16s)
+  // THE MOMENT - first star explodes and BLASTS the camera back to 550 units!
+  
+  // MASSIVE BLOOM on first ignition
+  tl.call(() => setBloomIntensity(5.5), [], 12.0)
+  tl.to(chromaticRef.current.offset, {
+    x: 0.08,
+    y: 0.08,
+    duration: 0.1,
+    ease: 'power4.in'
+  }, 12.0)
+
+  // Camera BLOWN BACK by the explosion force
+  tl.to(camera.position, {
+    x: 0,
+    y: 100,
+    z: 550,  // BLOWN WAY BACK!
+    duration: 2.0,
+    ease: 'power4.out'  // Explosive pushback
+  }, 12.0)
+
+  tl.to(camera.rotation, {
+    x: -0.18,
+    y: 0,
+    z: 0,
+    duration: 2.0,
+    ease: 'power4.out'
+  }, 12.0)
+
+  tl.to(camera, {
+    fov: 65,  // Wider FOV from the blast
+    duration: 2.0,
+    ease: 'power4.out',
+    onUpdate: () => camera.updateProjectionMatrix()
+  }, 12.0)
+
+  // Bloom starts falling immediately after peak
+  tl.call(() => setBloomIntensity(3.5), [], 12.2)
+  tl.call(() => setBloomIntensity(2.5), [], 12.8)
+  tl.call(() => setBloomIntensity(1.8), [], 13.5)
+
+  tl.to(chromaticRef.current.offset, {
+    x: 0.015,
+    y: 0.015,
+    duration: 2.0,
+    ease: 'power2.out'
+  }, 12.1)
+
+  // 🌌 ACT IV: RECOVER AND WITNESS THE CASCADE (16-24s)
+  // Camera slowly returns to better viewing position as more stars ignite
+  tl.to(camera.position, {
+    x: 60,
+    y: 70,
+    z: 220,  // Coming back but still far
+    duration: 8.0,
+    ease: 'power2.inOut'
+  }, 16.0)
+
+  tl.to(camera.rotation, {
+    x: -0.35,
+    y: Math.PI * 0.2,
+    z: 0.08,
+    duration: 8.0,
+    ease: 'power2.inOut'
+  }, 16.0)
+
+  tl.to(camera, {
+    fov: 58,
+    duration: 8.0,
+    ease: 'power2.inOut',
+    onUpdate: () => camera.updateProjectionMatrix()
+  }, 16.0)
+
+  tl.to(universeRef.current.rotation, {
+    x: Math.PI * 0.08,
+    y: -Math.PI * 0.15,
+    z: Math.PI * 0.03,
+    duration: 8.0,
+    ease: 'power1.inOut'
+  }, 16.0)
+
+  // Multiple secondary ignition waves
+  tl.call(() => setBloomIntensity(2.8), [], 17.5)
+  tl.to(chromaticRef.current.offset, {
+    x: 0.028,
+    y: 0.028,
+    duration: 0.5,
+    ease: 'power3.in'
+  }, 18.0)
+  tl.to(chromaticRef.current.offset, {
+    x: 0.008,
+    y: 0.008,
+    duration: 1.8,
+    ease: 'power2.out'
+  }, 18.5)
+
+  tl.call(() => setBloomIntensity(3.2), [], 19.5)
+  tl.to(chromaticRef.current.offset, {
+    x: 0.035,
+    y: 0.035,
+    duration: 0.6,
+    ease: 'power3.in'
+  }, 20.0)
+  tl.to(chromaticRef.current.offset, {
+    x: 0.01,
+    y: 0.01,
+    duration: 2.0,
+    ease: 'power2.out'
+  }, 20.6)
+
+  tl.call(() => setBloomIntensity(2.6), [], 22.0)
+
+  // 🎆 ACT V: THE UNIVERSE ILLUMINATED (24-32s)
+  // Opposite side sweep - see the full scope
+  tl.to(camera.position, {
+    x: -80,
+    y: 60,
+    z: 180,
+    duration: 8.0,
+    ease: 'power1.inOut'
+  }, 24.0)
+
+  tl.to(camera.rotation, {
+    x: -0.32,
+    y: -Math.PI * 0.28,
+    z: -0.08,
+    duration: 8.0,
+    ease: 'power1.inOut'
+  }, 24.0)
+
+  tl.to(camera, {
+    fov: 56,
+    duration: 8.0,
+    ease: 'sine.inOut',
+    onUpdate: () => camera.updateProjectionMatrix()
+  }, 24.0)
+
+  tl.to(universeRef.current.rotation, {
+    x: -Math.PI * 0.1,
+    y: Math.PI * 0.22,
+    z: -Math.PI * 0.05,
+    duration: 8.0,
+    ease: 'power1.inOut'
+  }, 24.0)
+
+  // Peak cluster ignitions
+  tl.call(() => setBloomIntensity(3.5), [], 25.5)
+  tl.to(chromaticRef.current.offset, {
+    x: 0.038,
+    y: 0.038,
+    duration: 0.7,
+    ease: 'power4.in'
+  }, 26.0)
+  tl.to(chromaticRef.current.offset, {
+    x: 0.01,
+    y: 0.01,
+    duration: 2.5,
+    ease: 'power2.out'
+  }, 26.7)
+
+  tl.call(() => setBloomIntensity(3.0), [], 28.0)
+  tl.call(() => setBloomIntensity(2.5), [], 30.0)
+
+  // 🌟 ACT VI: COSMIC MAJESTY - RETURN TO FINAL POSITION (32-42s)
+  // Pull back to the grand overview - stable final position
+  tl.to(camera.position, {
+    x: 0,
+    y: 90,
+    z: 200,  // Final comfortable viewing distance
+    duration: 10.0,
+    ease: 'power2.out'
+  }, 32.0)
+
+  tl.to(camera.rotation, {
+    x: -0.42,
+    y: 0,
+    z: 0,
+    duration: 10.0,
+    ease: 'power2.out'
+  }, 32.0)
+
+  tl.to(camera, {
+    fov: 60,
+    duration: 10.0,
+    ease: 'power2.out',
+    onUpdate: () => camera.updateProjectionMatrix()
+  }, 32.0)
+
+  tl.to(universeRef.current.rotation, {
+    x: 0,
+    y: 0,
+    z: 0,
+    duration: 10.0,
+    ease: 'power2.out'
+  }, 32.0)
+
+  tl.to(universeRef.current.scale, {
+    x: 1.2,
+    y: 1.2,
+    z: 1.2,
+    duration: 10.0,
+    ease: 'power2.out'
+  }, 32.0)
+
+  // Final chromatic cleanup
+  tl.to(chromaticRef.current.offset, {
+    x: 0,
+    y: 0,
+    duration: 6.0,
+    ease: 'power1.out'
+  }, 34.0)
+
+  // Bloom settles
+  tl.call(() => setBloomIntensity(2.2), [], 34.0)
+  tl.call(() => setBloomIntensity(2.0), [], 37.0)
+  tl.call(() => setBloomIntensity(1.8), [], 40.0)
+
+  // 🎮 Enable elegant controls
+  tl.call(() => {
+    if (controlsRef.current) {
+      controlsRef.current.enabled = true
+      controlsRef.current.enableDamping = true
+      controlsRef.current.dampingFactor = 0.05
+      controlsRef.current.minDistance = 100
+      controlsRef.current.maxDistance = 350
+      controlsRef.current.enablePan = false
+      controlsRef.current.maxPolarAngle = Math.PI * 0.7
+      controlsRef.current.minPolarAngle = Math.PI * 0.3
+      controlsRef.current.rotateSpeed = 0.4
+    }
+  }, [], 42.0)
+}
   }))
 
   return (
