@@ -2,17 +2,14 @@
 
 A cinematic, interactive 3D simulation of the universe's origins, from the Planck Epoch to the first stars. This project is built with Next.js, React Three Fiber, and GSAP to create a beautiful and educational experience.
 
-
-
-
 ---
 
-## 🚀 Current Status
+## 🌀 Fun Extras & Cosmic Detours
 
-This project is in active development. The simulation currently includes:
-* **The Planck Epoch:** A representation of the initial singularity and the chaotic "quantum foam."
-* **Cosmic Inflation:** A violent, cinematic expansion event with post-processing "shockwave" effects.
-* **Interactive Info Panels:** Clickable 3D objects that fetch data from a local JSON "API" and the live NASA Image API.
+This simulation also includes additional routes exploring other complex concepts:
+
+* **/blackhole:** An interactive 3D model of a black hole.
+* **/tesseract:** A visualization of a four-dimensional tesseract.
 
 ---
 
@@ -64,7 +61,7 @@ The goal is to simulate all seven major events in the universe's timeline:
 1.  [x] **Planck Epoch** (The vibrating point)
 2.  [x] **Cosmic Inflation** (The violent expansion)
 3.  [x] **Quark-Gluon Plasma** (The "particle soup")
-4.  [ ] **Nucleosynthesis** (Protons and neutrons form)
-5.  [ ] **Recombination** (The "First Light")
-6.  [ ] **The Dark Ages** (A vast, dark void)
-7.  [ ] **First Stars Ignite** (The darkness ends)
+4.  [x] **Nucleosynthesis** (Protons and neutrons form)
+5.  [x] **Recombination** (The "First Light")
+6.  [x] **The Dark Ages** (A vast, dark void)
+7.  [x] **First Stars Ignite** (The darkness ends)

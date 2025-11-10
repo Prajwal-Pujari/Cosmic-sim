@@ -1282,6 +1282,10 @@ transitionToDarkAges() {
   if (!chromaticRef.current) return
   
   setEpoch('cosmicdawn')
+  setShowPlasma(false)
+  setShowRecombination(false)
+  setShowNucleosynthesis(false)
+  
   controlsRef.current.enabled = false
   
   const tl = gsap.timeline({
