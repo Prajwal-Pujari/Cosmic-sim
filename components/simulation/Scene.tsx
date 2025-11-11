@@ -938,7 +938,7 @@ transitionToDarkAges() {
   
   const tl = gsap.timeline({
     onComplete: () => {
-      console.log("🌑 The Dark Ages - a universe waiting in silence")
+      //e.log("🌑 The Dark Ages - a universe waiting in silence")
     }
   })
 
@@ -1281,7 +1281,7 @@ transitionToDarkAges() {
   
   const tl = gsap.timeline({
     onComplete: () => {
-      console.log("🌟 Cosmic Dawn - Let there be light!")
+      //e.log("🌟 Cosmic Dawn - Let there be light!")
     }
   })
 
@@ -1641,7 +1641,7 @@ transitionToDarkAges() {
           <Recombination 
             isVisible={showRecombination}
             onComplete={() => {
-              console.log("🌟 180° rotation complete - Viewing from the other side!")
+              //e.log("🌟 180° rotation complete - Viewing from the other side!")
             }}
           />
         )}
@@ -1650,7 +1650,7 @@ transitionToDarkAges() {
             isVisible={showDarkAges}
             fadeIn={darkAgesFadeIn}
             onComplete={() => {
-              console.log("🌑 The Dark Ages settle - silence before the first stars...")
+              //e.log("🌑 The Dark Ages settle - silence before the first stars...")
             }}
           />
         )}
@@ -1659,7 +1659,7 @@ transitionToDarkAges() {
             isVisible={showCosmicDawn}
             fadeIn={cosmicDawnFadeIn}
             onComplete={() => {
-              console.log("🌟 Cosmic Dawn complete - The first stars illuminate the universe!")
+              //e.log("🌟 Cosmic Dawn complete - The first stars illuminate the universe!")
             }}
           />
         )}
