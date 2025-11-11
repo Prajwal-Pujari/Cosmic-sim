@@ -23,7 +23,7 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
   const completedRef = useRef(false);
   const { camera } = useThree();
 
-  // Enhanced star glow texture
+  // star glow texture
   const starTexture = useMemo(() => {
     const canvas = document.createElement('canvas');
     canvas.width = 256;
@@ -65,7 +65,7 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
     return texture;
   }, []);
 
-  // First stars data - INCREASED COUNT
+  // First stars data 
   const firstStars = useMemo(() => {
     const count = 300;
     const positions = new Float32Array(count * 3);
@@ -92,7 +92,7 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
       positions[i3 + 1] = clusterY + localRadius * Math.sin(phi) * Math.sin(theta);
       positions[i3 + 2] = clusterZ + localRadius * Math.cos(phi);
 
-      // Diabolical star colors - crimson, violet, electric blue
+     
       const starType = Math.random();
       if (starType > 0.8) {
         // Blood-red supergiants
@@ -130,7 +130,7 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
     return { positions, colors, sizes, phases, ignitionTime, intensities };
   }, []);
 
-  // Birth clouds - INCREASED
+  // Birth clouds
   const birthClouds = useMemo(() => {
     const count = 25000;
     const positions = new Float32Array(count * 3);
@@ -175,7 +175,7 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
     return { positions, colors, sizes, starIndex, originalOffsets };
   }, [firstStars.positions]);
 
-  // Accretion disks - INCREASED
+  // Accretion disks
   const accretionDisks = useMemo(() => {
     const count = 15000;
     const positions = new Float32Array(count * 3);
@@ -206,7 +206,7 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
     return { positions, colors, sizes, starIndex, diskAngle };
   }, [firstStars.positions]);
 
-  // Shockwaves - INCREASED
+  // Shockwaves 
   const shockwaves = useMemo(() => {
     const count = 8000;
     const positions = new Float32Array(count * 3);
@@ -252,7 +252,7 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
     return { positions, colors, sizes, starIndex, ejectionVector };
   }, [firstStars.positions]);
 
-  // Stellar wind - INCREASED
+  // Stellar wind 
   const stellarWind = useMemo(() => {
     const count = 12000;
     const positions = new Float32Array(count * 3);
@@ -281,7 +281,7 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
     return { positions, colors, sizes, starIndex, windPhase };
   }, [firstStars.positions]);
 
-  // NEW: Cosmic debris field
+
   const cosmicDebris = useMemo(() => {
     const count = 15000;
     const positions = new Float32Array(count * 3);
@@ -308,7 +308,7 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
     return { positions, colors, sizes };
   }, []);
 
-  // NEW: Energy ripples
+
   const energyRipples = useMemo(() => {
     const count = 8000;
     const positions = new Float32Array(count * 3);
@@ -335,7 +335,7 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
     return { positions, colors, sizes };
   }, []);
 
-  // NEW: Deep space background
+  
   const deepSpace = useMemo(() => {
     const count = 12000;
     const positions = new Float32Array(count * 3);
@@ -388,7 +388,7 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
       energyRipplesRef.current.scale.setScalar(pulse);
     }
 
-    // Birth clouds - gravitational collapse
+  
     if (birthCloudRef.current) {
       const geometry = birthCloudRef.current.geometry;
       const positions = geometry.attributes.position.array as Float32Array;
@@ -696,7 +696,7 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
         panSpeed={2.0}
       />
 
-      {/* Deep space background - infinite depth */}
+  
       <points ref={deepSpaceRef}>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[deepSpace.positions, 3]} />

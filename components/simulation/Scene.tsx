@@ -582,8 +582,7 @@ const Scene = forwardRef(({
       
       const tl = gsap.timeline()
 
-      // 🎬 ACT I: GENTLE RETREAT (0-2.5s)
-      // Smoothly pull back from nucleosynthesis - establishing shot
+     
       tl.to(camera.position, {
         x: 0,
         y: 1,
@@ -700,8 +699,7 @@ const Scene = forwardRef(({
       tl.call(() => setBloomIntensity(3.0), [], 3.5)
       tl.call(() => setBloomIntensity(2.2), [], 5.5)
 
-      // 🎭 ACT III: SWEEPING ORBITAL ARC (6.5-12.0s)
-      // Cinematic right-side sweep with perfect parallax
+
       tl.to(camera.position, {
         x: 22,
         y: 12,
@@ -771,8 +769,7 @@ const Scene = forwardRef(({
       tl.call(() => setBloomIntensity(2.7), [], 7.5)
       tl.call(() => setBloomIntensity(2.3), [], 10.0)
 
-      // 🌊 ACT IV: FLOWING DIVE TO REAR (12.0-18.0s)
-      // Smooth dive while completing hemisphere - money shot!
+
       tl.to(camera.position, {
         x: 12,
         y: 8,
@@ -842,8 +839,7 @@ const Scene = forwardRef(({
       tl.call(() => setBloomIntensity(2.8), [], 13.0)
       tl.call(() => setBloomIntensity(2.1), [], 16.0)
 
-      // 🎆 ACT V: GRAND FINALE - REAR VIEW (18.0-24.0s)
-      // Complete 180° and settle into majestic rear view
+ 
       tl.to(camera.position, {
         x: 0,
         y: 4,
@@ -929,7 +925,7 @@ const Scene = forwardRef(({
     },
 
   
-     // Replace your transitionToDarkAges function with this improved version:
+   
 
 transitionToDarkAges() {
   if (!chromaticRef.current) return
@@ -937,7 +933,7 @@ transitionToDarkAges() {
   setEpoch('darkages')
   controlsRef.current.enabled = false
   
-  // Store initial fadeIn value to pass to DarkAges component
+ 
   
   
   const tl = gsap.timeline({
@@ -946,8 +942,7 @@ transitionToDarkAges() {
     }
   })
 
-  // 🎬 PROLOGUE: FADE TO BLACK (0-4s)
-  // Gentle, peaceful transition - everything slowly dims
+ 
   tl.to({ value: 0.85 }, {
     value: 0.35,
     duration: 4.0,
@@ -1034,8 +1029,7 @@ transitionToDarkAges() {
 
   tl.call(() => setBloomIntensity(0.25), [], 4.5)
 
-  // 🌌 ACT I: EMERGENCE INTO VOID (5-10s)
-  // Camera moves while scene fades in gradually
+
   tl.to(camera.position, {
     x: 0,
     y: -8,
@@ -1098,8 +1092,7 @@ transitionToDarkAges() {
   tl.call(() => setBloomIntensity(0.2), [], 6.0)
   tl.call(() => setBloomIntensity(0.15), [], 9.0)
 
-  // 🎭 ACT II: CINEMATIC ORBIT (10-18s)
-  // Smooth, majestic circular orbit around the void
+
   tl.to(camera.position, {
     x: 25,
     y: -5,
@@ -1166,8 +1159,7 @@ transitionToDarkAges() {
   tl.call(() => setBloomIntensity(0.12), [], 13.0)
   tl.call(() => setBloomIntensity(0.1), [], 17.0)
 
-  // 🌠 ACT III: DRAMATIC RISE (18-26s)
-  // Ascend to God's eye view - contemplative and grand
+ 
   tl.to(camera.position, {
     x: 8,
     y: 32,
@@ -1210,8 +1202,7 @@ transitionToDarkAges() {
   tl.call(() => setBloomIntensity(0.14), [], 20.0)
   tl.call(() => setBloomIntensity(0.18), [], 24.0)
 
-  // 🎆 ACT IV: FINAL REVEAL (26-34s)
-  // Pull back to wide establishing shot - the majesty of darkness
+ 
   tl.to(camera.position, {
     x: 0,
     y: 8,
@@ -1294,8 +1285,8 @@ transitionToDarkAges() {
     }
   })
 
-  // 🎬 PROLOGUE: THE VOID BEFORE CREATION (0-5s)
-  // Pull VERY far back - we need to see the cosmic scale
+ 
+ 
   tl.to(camera.position, {
     x: 0,
     y: 120,
@@ -1366,9 +1357,7 @@ transitionToDarkAges() {
   tl.call(() => setBloomIntensity(0.08), [], 6.0)
   tl.call(() => setBloomIntensity(0.12), [], 7.5)
 
-  // 💫 ACT II: THE FIRST CORE FORMS (8-12s)
-  // Accretion disk becomes visible - something is happening!
-  // Camera gets MUCH closer before the explosion
+ 
   tl.to(camera.position, {
     x: -30,
     y: 50,
@@ -1396,10 +1385,9 @@ transitionToDarkAges() {
   tl.call(() => setBloomIntensity(0.25), [], 10.0)
   tl.call(() => setBloomIntensity(0.35), [], 11.5)
 
-  // 🔥💥 ACT III: EXPLOSION! CAMERA BLOWN BACK! (12-16s)
-  // THE MOMENT - first star explodes and BLASTS the camera back to 550 units!
+
   
-  // MASSIVE BLOOM on first ignition
+
   tl.call(() => setBloomIntensity(5.5), [], 12.0)
   tl.to(chromaticRef.current.offset, {
     x: 0.08,
@@ -1444,8 +1432,7 @@ transitionToDarkAges() {
     ease: 'power2.out'
   }, 12.1)
 
-  // 🌌 ACT IV: RECOVER AND WITNESS THE CASCADE (16-24s)
-  // Camera slowly returns to better viewing position as more stars ignite
+ 
   tl.to(camera.position, {
     x: 60,
     y: 70,
@@ -1508,8 +1495,7 @@ transitionToDarkAges() {
 
   tl.call(() => setBloomIntensity(2.6), [], 22.0)
 
-  // 🎆 ACT V: THE UNIVERSE ILLUMINATED (24-32s)
-  // Opposite side sweep - see the full scope
+ 
   tl.to(camera.position, {
     x: -80,
     y: 60,
@@ -1559,8 +1545,7 @@ transitionToDarkAges() {
   tl.call(() => setBloomIntensity(3.0), [], 28.0)
   tl.call(() => setBloomIntensity(2.5), [], 30.0)
 
-  // 🌟 ACT VI: COSMIC MAJESTY - RETURN TO FINAL POSITION (32-42s)
-  // Pull back to the grand overview - stable final position
+
   tl.to(camera.position, {
     x: 0,
     y: 90,

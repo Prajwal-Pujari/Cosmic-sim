@@ -1,4 +1,3 @@
-// components/simulation/TesseractScene.tsx
 'use client';
 
 import { useRef, useMemo } from 'react';

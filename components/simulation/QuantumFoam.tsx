@@ -27,7 +27,7 @@ export default function QuantumFoam({
       const phi = Math.acos(-1 + (2 * Math.random()))
       const theta = Math.random() * 2 * Math.PI
 
-      // Generate a random radius within the sphere (cubed for even distribution)
+      
       const r = Math.cbrt(Math.random()) * radius
 
       // Convert spherical to Cartesian coordinates
@@ -39,7 +39,7 @@ export default function QuantumFoam({
       positions[i * 3 + 1] = y
       positions[i * 3 + 2] = z
 
-      // Add subtle color variation based on position
+      // subtle color variation based on position
       const variation = Math.random() * 0.2 - 0.1
       colors[i * 3 + 0] = base.r + variation
       colors[i * 3 + 1] = base.g + variation

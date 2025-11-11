@@ -3,11 +3,11 @@ import { useFrame } from '@react-three/fiber';
 import '../shaders/PlasmaMaterial';
 
 export default function QuarkGluonPlasma({ materialRef }: { materialRef: RefObject<any> }) {
-  // Optimized particle count - still visually dense
+ 
   const particleCount = 12000;
   const boxSize = 10;
 
-  // Create multiple particle layers for depth and realism
+  // Create multiple particle layers for depth 
   const { corePositions, mediumPositions, outerPositions } = useMemo(() => {
     // CORE LAYER: Dense, hot center (4000 particles)
     const core = new Float32Array(4000 * 3);
@@ -22,7 +22,7 @@ export default function QuarkGluonPlasma({ materialRef }: { materialRef: RefObje
       core[i * 3 + 2] = radius * Math.cos(phi);
     }
 
-    // MEDIUM LAYER: Active plasma zone (5000 particles)
+    // MEDIUM LAYER: Active plasma zone
     const medium = new Float32Array(5000 * 3);
     for (let i = 0; i < 5000; i++) {
       const theta = Math.random() * Math.PI * 2;
@@ -35,7 +35,7 @@ export default function QuarkGluonPlasma({ materialRef }: { materialRef: RefObje
       medium[i * 3 + 2] = radius * Math.cos(phi);
     }
 
-    // OUTER LAYER: Cooling edge particles (3000 particles)
+    // OUTER LAYER: Cooling edge particles
     const outer = new Float32Array(3000 * 3);
     for (let i = 0; i < 3000; i++) {
       const theta = Math.random() * Math.PI * 2;
@@ -51,11 +51,11 @@ export default function QuarkGluonPlasma({ materialRef }: { materialRef: RefObje
     return { corePositions: core, mediumPositions: medium, outerPositions: outer };
   }, []);
 
-  // Realistic turbulent motion update
+
   let frameCount = 0;
   useFrame((state) => {
     frameCount++;
-    // Update every other frame for performance
+   
     if (materialRef.current && frameCount % 2 === 0) {
       materialRef.current.uniforms.uTime.value = state.clock.getElapsedTime();
     }
@@ -63,7 +63,7 @@ export default function QuarkGluonPlasma({ materialRef }: { materialRef: RefObje
 
   return (
     <group>
-      {/* CORE: Ultra-hot white-blue center (highest energy quarks) */}
+     
       <points frustumCulled={true}>
         <bufferGeometry>
           <bufferAttribute
@@ -82,7 +82,7 @@ export default function QuarkGluonPlasma({ materialRef }: { materialRef: RefObje
         />
       </points>
 
-      {/* MEDIUM LAYER: Active quark-gluon plasma with color fields */}
+     
       <points frustumCulled={true}>
         <bufferGeometry>
           <bufferAttribute
@@ -97,7 +97,7 @@ export default function QuarkGluonPlasma({ materialRef }: { materialRef: RefObje
         />
       </points>
 
-      {/* GREEN GLUON FIELD: Representing strong force carriers */}
+     
       <points frustumCulled={true}>
         <bufferGeometry>
           <bufferAttribute
@@ -116,7 +116,7 @@ export default function QuarkGluonPlasma({ materialRef }: { materialRef: RefObje
         />
       </points>
 
-      {/* OUTER LAYER: Cooling plasma edge (red-shifted, lower energy) */}
+    
       <points frustumCulled={true}>
         <bufferGeometry>
           <bufferAttribute
@@ -135,7 +135,7 @@ export default function QuarkGluonPlasma({ materialRef }: { materialRef: RefObje
         />
       </points>
 
-      {/* AMBER/YELLOW FIELD: Represents thermal radiation */}
+     
       <points frustumCulled={true}>
         <bufferGeometry>
           <bufferAttribute

@@ -4,7 +4,7 @@ import { OrbitControls, shaderMaterial } from '@react-three/drei';
 import { EffectComposer, Bloom, ChromaticAberration, Vignette } from '@react-three/postprocessing';
 import * as THREE from 'three';
 
-// Enhanced Accretion Disk Shader
+
 const AccretionDiskMaterial = shaderMaterial(
   {
     uTime: 0,

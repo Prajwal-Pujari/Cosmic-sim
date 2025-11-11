@@ -2,7 +2,7 @@ import { useRef, useState, useEffect, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Vector3, Color, InstancedMesh, Matrix4, Quaternion } from 'three';
 
-// Scientifically accurate particle properties
+
 const PARTICLE_TYPES = {
   proton: { 
     color: new Color('#ff2244'), 
@@ -68,7 +68,7 @@ interface ParticleData {
 const createInitialParticles = (count: number, boxSize: number): ParticleData[] => {
   const particles: ParticleData[] = [];
   
-  // Realistic distribution: 75% protons, 12.5% neutrons, 12.5% electrons
+// distribution: 75% protons, 12.5% neutrons, 12.5% electrons
   for (let i = 0; i < count; i++) {
     const rand = Math.random();
     let type: keyof typeof PARTICLE_TYPES;
@@ -167,7 +167,6 @@ export default function Nucleosynthesis({
         p.age += delta;
         p.temperature = Math.max(0.3, p.temperature - delta * 0.02); // Cooling
 
-        // Active particles move with realistic physics
         if (!['helium4', 'helium3', 'hydrogen', 'deuterium', 'tritium'].includes(p.type)) {
           // Brownian motion + thermal agitation
           const thermalSpeed = 0.3 * delta * p.temperature;
@@ -190,7 +189,7 @@ export default function Nucleosynthesis({
             p.velocity.multiplyScalar(0.7);
           }
 
-          // Gravity-like attraction to center (plasma cohesion)
+         //attraction to center (plasma cohesion)
           const centerForce = p.position.clone().normalize().multiplyScalar(-0.0005 * delta * 60);
           p.velocity.add(centerForce);
         } else {

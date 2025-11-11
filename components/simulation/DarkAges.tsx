@@ -43,7 +43,7 @@ const DarkAges = ({ isVisible, onComplete, fadeIn = 1 }: DarkAgesProps) => {
     return texture;
   }, []);
 
-  // Increased darkness particles for more depth
+
   const darknessParticles = useMemo(() => {
     const count = 15000;
     const positions = new Float32Array(count * 3);
@@ -232,7 +232,7 @@ const DarkAges = ({ isVisible, onComplete, fadeIn = 1 }: DarkAgesProps) => {
     return { positions, colors, sizes };
   }, []);
 
-  // Far field for infinite depth
+
   const farField = useMemo(() => {
     const count = 8000;
     const positions = new Float32Array(count * 3);
@@ -259,7 +259,7 @@ const DarkAges = ({ isVisible, onComplete, fadeIn = 1 }: DarkAgesProps) => {
     return { positions, colors, sizes };
   }, []);
 
-  // Deep space background
+
   const deepSpace = useMemo(() => {
     const count = 10000;
     const positions = new Float32Array(count * 3);

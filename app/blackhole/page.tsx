@@ -3,7 +3,7 @@
 import { Canvas } from '@react-three/fiber';
 import BlackHoleScene from '@/components/simulation/BlackHole';
 import { Suspense, useState } from 'react';
-// import { Settings, X } from 'lucide-react';
+
 import './BlackHoleControls.css';
 
 export default function BlackHolePage() {
