@@ -112,10 +112,10 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
         colors[i3 + 1] = 1.0;
         colors[i3 + 2] = 0.7;
         intensities[i] = 2.5 + Math.random() * 1.5;
-      } else {
-        // Deep cyan-blue
-        colors[i3] = 0.3;
-        colors[i3 + 1] = 0.7;
+     } else {
+  // Bright white
+        colors[i3] = 1.0;
+        colors[i3 + 1] = 1.0;
         colors[i3 + 2] = 1.0;
         intensities[i] = 2.8 + Math.random() * 1.6;
       }
@@ -242,10 +242,10 @@ const CosmicDawn = ({ isVisible, fadeIn = 1, onComplete }: CosmicDawnProps) => {
         colors[i3 + 1] = 0.3;
         colors[i3 + 2] = 0.4;
       } else {
-        colors[i3] = 0.8;
-        colors[i3 + 1] = 0.9;
-        colors[i3 + 2] = 1.0;
-      }
+  colors[i3] = 1.0;
+  colors[i3 + 1] = 1.0;
+  colors[i3 + 2] = 1.0;
+}
 
       sizes[i] = 4.0 + Math.random() * 10.0;
     }
