@@ -24,9 +24,26 @@ export default function TesseractPage() {
             alpha: true
           }}
         >
+          
           <TesseractScene />
         </Canvas>
       </Suspense>
+      <div className="absolute bottom-6 right-6 z-20 text-right space-y-1 pointer-events-auto select-none opacity-40 hover:opacity-100 transition-opacity duration-300">
+        <div className="flex items-center justify-end gap-2">
+          <span className="text-[10px] font-mono text-gray-400 uppercase tracking-wider">Rotate Environment</span>
+          <div className="px-1.5 py-0.5 rounded border border-white/20 bg-white/5 text-[9px] font-mono text-gray-300">
+            L-Click
+          </div>
+        </div>
+        
+        <div className="flex items-center justify-end gap-2">
+          <span className="text-[10px] font-mono text-gray-400 uppercase tracking-wider">Zoom In/Out</span>
+          <div className="px-1.5 py-0.5 rounded border border-white/20 bg-white/5 text-[9px] font-mono text-gray-300">
+            Scroll / Pinch
+          </div>
+        </div>
+      </div>
     </div>
+    
   );
 }

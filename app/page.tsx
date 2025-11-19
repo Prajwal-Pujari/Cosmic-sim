@@ -212,7 +212,7 @@ export default function Home() {
             </div>
 
             <p className="mt-3 text-xs text-purple-300 italic border-l-2 border-purple-500 pl-2">
-              🌟 Universe becomes transparent - photons decouple and travel freely!
+               Universe becomes transparent - photons decouple and travel freely!
             </p>
             
             <div className="mt-2 h-1 bg-linear-to-r from-cyan-500 via-blue-500 to-purple-500 rounded animate-pulse"></div>
@@ -247,7 +247,7 @@ export default function Home() {
             </div>
 
             <p className="mt-3 text-xs text-gray-500 italic border-l-2 border-gray-700 pl-2">
-              ⏳ The cosmic dark ages - a silent universe waiting for the first stars to ignite...
+               The cosmic dark ages - a silent universe waiting for the first stars to ignite...
             </p>
             
             <div className="mt-2 h-1 bg-linear-to-r from-gray-800 via-gray-900 to-black rounded opacity-50"></div>
@@ -263,7 +263,7 @@ export default function Home() {
             <p className="mt-2 text-sm text-blue-200">The first stars ignite, breaking the cosmic silence!</p>
             
             <div className="mt-3 p-2.5 bg-blue-950/30 rounded border border-blue-500/40">
-              <p className="text-xs text-blue-200 mb-2 font-medium">✨ Dawn of Light:</p>
+              <p className="text-xs text-blue-200 mb-2 font-medium"> Dawn of Light:</p>
               <div className="text-xs text-gray-300 space-y-1">
                 <div className="flex items-start gap-2">
                   <span className="text-blue-400">⭐</span>
@@ -296,12 +296,33 @@ export default function Home() {
             </div>
 
             <p className="mt-3 text-xs text-purple-300 italic border-l-2 border-blue-500 pl-2">
-              🌅 Let there be light - the universe awakens from darkness!
+               Let there be light - the universe awakens from darkness!
             </p>
             
             <div className="mt-2 h-1 bg-linear-to-r from-blue-500 via-white to-purple-500 rounded animate-pulse shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
+           
           </div>
         )}
+      </div>
+       <div className="absolute bottom-6 right-6 z-20 text-right space-y-1 pointer-events-auto select-none opacity-40 hover:opacity-100 transition-opacity duration-300">
+        <div className="flex items-center justify-end gap-2">
+          <span className="text-[10px] font-mono text-gray-400 uppercase tracking-wider">Rotate Environment</span>
+          <div className="px-1.5 py-0.5 rounded border border-white/20 bg-white/5 text-[9px] font-mono text-gray-300">
+            L-Click
+          </div>
+        </div>
+        <div className="flex items-center justify-end gap-2">
+          <span className="text-[10px] font-mono text-gray-400 uppercase tracking-wider">Move View</span>
+          <div className="px-1.5 py-0.5 rounded border border-white/20 bg-white/5 text-[9px] font-mono text-gray-300">
+            R-Click
+          </div>
+        </div>
+        <div className="flex items-center justify-end gap-2">
+          <span className="text-[10px] font-mono text-gray-400 uppercase tracking-wider">Zoom In/Out</span>
+          <div className="px-1.5 py-0.5 rounded border border-white/20 bg-white/5 text-[9px] font-mono text-gray-300">
+            Scroll / Pinch
+          </div>
+        </div>
       </div>
       
       {isClient && (

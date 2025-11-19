@@ -41,7 +41,8 @@ export default function BlackHolePage() {
           className="control-trigger"
           aria-label="Open controls"
         >
-          {/* <Settings className="icon" /> */}S
+           {/* Assuming you want a simple text or icon here since <Settings /> was commented out */}
+           <span >⚙️</span> 
         </button>
       )}
 
@@ -60,22 +61,7 @@ export default function BlackHolePage() {
           </div>
 
           <div className="controls-content">
-            {/* Lighting Presets */}
-            {/* <div className="control-group">
-              <label className="control-label">Lighting Preset</label>
-              <div className="preset-buttons">
-                {(['realistic', 'cinematic', 'ethereal'] as const).map((preset) => (
-                  <button
-                    key={preset}
-                    onClick={() => setLightingPreset(preset)}
-                    className={`preset-btn ${lightingPreset === preset ? 'active' : ''}`}
-                  >
-                    {preset}
-                  </button>
-                ))}
-              </div>
-            </div> */}
-
+            
             {/* Toggles */}
             <div className="control-group">
               <div className="toggle-row">
@@ -160,10 +146,11 @@ export default function BlackHolePage() {
                     value={diskIntensity}
                     onChange={(e) => setDiskIntensity(parseFloat(e.target.value))}
                     className="custom-slider"
+                    // CHANGED: Gradient to White/Grey scale
                     style={{
                       background: `linear-gradient(to right, 
-                        hsl(190, 95%, 55%) 0%, 
-                        hsl(190, 95%, 55%) ${((diskIntensity - 0.5) / 2.5) * 100}%, 
+                        #ffffff 0%, 
+                        #aaaaaa ${((diskIntensity - 0.5) / 2.5) * 100}%, 
                         rgba(255,255,255,0.1) ${((diskIntensity - 0.5) / 2.5) * 100}%, 
                         rgba(255,255,255,0.1) 100%)`
                     }}
@@ -185,10 +172,11 @@ export default function BlackHolePage() {
                     value={bloomIntensity}
                     onChange={(e) => setBloomIntensity(parseFloat(e.target.value))}
                     className="custom-slider"
+                    // CHANGED: Gradient to Silver/Dark Grey
                     style={{
                       background: `linear-gradient(to right, 
-                        hsl(25, 95%, 60%) 0%, 
-                        hsl(25, 95%, 60%) ${((bloomIntensity - 1) / 9) * 100}%, 
+                        #cccccc 0%, 
+                        #666666 ${((bloomIntensity - 1) / 9) * 100}%, 
                         rgba(255,255,255,0.1) ${((bloomIntensity - 1) / 9) * 100}%, 
                         rgba(255,255,255,0.1) 100%)`
                     }}

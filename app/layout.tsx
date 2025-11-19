@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Were It All Began",
   description: "Part we called Singularity",
+  icons: {
+    icon: "/cosmic-sim.svg",
+  },
 };
 
 export default function RootLayout({
