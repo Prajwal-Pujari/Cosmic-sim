@@ -50,7 +50,7 @@ To run this project on your local machine:
     npm run dev
     ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the simulation.
+Open [http://localhost:3100](http://localhost:3100) in your browser to see the simulation.
 
 ---
 
