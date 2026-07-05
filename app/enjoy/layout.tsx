@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Enjoy | Hypnotic Minimalist Motion",
+  title: "Enjoy",
   description:
-    "An ultra-minimalistic animation of a single circle moving along a square path on a pure ivory background with dynamic speed phases.",
+    "Just circle and square moving around .",
 };
 
 export default function EnjoyLayout({
